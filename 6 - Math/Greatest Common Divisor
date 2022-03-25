@@ -1,4 +1,4 @@
-Calcula el máximo común divisor entre a y b 
+    Calcula el máximo común divisor entre a y b 
 
     double gcd(double a, double b) {
         if (a < b) {
