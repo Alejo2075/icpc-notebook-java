@@ -1,7 +1,9 @@
+Libreria para recibir las entradas; reemplaza el Scanner original, mejorando su eficiencia.
 
 import java.io.*;
-import java.math.BigInteger;
+import java.math.*;
 import java.util.*;
+import java.awt.*;
 
 public class Main {
 
