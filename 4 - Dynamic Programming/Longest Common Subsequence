@@ -1,4 +1,4 @@
-    Subsequencia comun mas larga    
+    Longitud de la subsequencia comun mas larga    
 
     int lcs(char[] X, char[] Y, int m, int n) {
         int L[][] = new int[m + 1][n + 1];
