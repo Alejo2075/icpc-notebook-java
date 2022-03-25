@@ -1,0 +1,9 @@
+Bibliotecas de JAVA para busqueda y ordenamiento.
+
+Arrays.binarySearch(arr[], n);
+Collections.binarySearch(ArrayList, n);
+
+Arrays.sort(arr[]);
+Arrays.sort(arr[], Collections.reverseOrder());
+Collections.sort(ArrayList);
+Collections.sort(ArrayList, Collections.reverseOrder());
