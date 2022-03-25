@@ -1,4 +1,4 @@
-    Busqueda binaria de un elemento en un arreglo
+    Busqueda de un elemento en un arreglo
 
     int binarySearch(int arr[], int x) {
         int l = 0, r = arr.length - 1;
