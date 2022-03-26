@@ -1,4 +1,4 @@
-
+    Encuentra el valor mínimo posible de x que produce residuos dados.
 
     int findMinX(int num[], int rem[], int k) {
         int x = 1;
