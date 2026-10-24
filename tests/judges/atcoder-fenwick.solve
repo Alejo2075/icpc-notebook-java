@@ -1,0 +1,11 @@
+int n = in.nextInt();
+int q = in.nextInt();
+DataStructures.Fenwick tree = new DataStructures.Fenwick(n);
+for (int i = 0; i < n; i++) tree.add(i, in.nextLong());
+for (int i = 0; i < q; i++) {
+    int type = in.nextInt();
+    int left = in.nextInt();
+    long right = in.nextLong();
+    if (type == 0) tree.add(left, right);
+    else out.println(tree.rangeSum(left, (int) right));
+}

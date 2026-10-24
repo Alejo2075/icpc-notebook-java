@@ -1,0 +1,5 @@
+int a = in.nextInt();
+int b = in.nextInt();
+int c = in.nextInt();
+String s = in.next();
+out.println((a + b + c) + " " + s);

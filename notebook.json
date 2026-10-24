@@ -1,0 +1,38 @@
+{
+  "title": "ICPC Notebook Java",
+  "subtitle": "Team Reference",
+  "chapters": [
+    {"name": "Plantilla y entrada", "entries": [
+      {"id": "template", "title": "Main de concurso", "file": "src/template/Main.java", "profiles": ["full", "contest"], "note": "Archivo unico listo para un juez en linea."},
+      {"id": "io", "title": "Entrada rapida", "file": "src/main/java/notebook/ContestIO.java", "profiles": ["full"], "note": "Tokens ASCII; devuelve null al terminar la entrada."}
+    ]},
+    {"name": "Estructuras de datos", "entries": [
+      {"id": "structures", "title": "DSU, Fenwick y segment tree", "file": "src/main/java/notebook/DataStructures.java", "profiles": ["full", "contest"], "note": "Indices desde cero e intervalos semiabiertos."}
+    ]},
+    {"name": "Busqueda y ordenamiento", "entries": [
+      {"id": "search", "title": "Busqueda binaria, ternaria y counting sort", "file": "src/main/java/notebook/SearchingSorting.java", "profiles": ["full"], "note": "Las busquedas requieren un arreglo ordenado."}
+    ]},
+    {"name": "Programacion dinamica", "entries": [
+      {"id": "dp", "title": "Patrones de programacion dinamica", "file": "src/main/java/notebook/DynamicProgramming.java", "profiles": ["full"], "note": "Incluye mochila 0/1, subsecuencias, cambio y particion."}
+    ]},
+    {"name": "Cadenas", "entries": [
+      {"id": "strings", "title": "KMP, Manacher, Boyer-Moore y Z", "file": "src/main/java/notebook/StringsAlgorithms.java", "profiles": ["full", "contest"], "note": "Opera sobre unidades UTF-16 de Java."},
+      {"id": "advanced-strings", "title": "Trie y rolling hash", "file": "src/main/java/notebook/AdvancedStrings.java", "profiles": ["full"], "note": "Hash doble; la igualdad de hashes no constituye una prueba exacta."}
+    ]},
+    {"name": "Matematicas", "entries": [
+      {"id": "math", "title": "Teoria de numeros", "file": "src/main/java/notebook/NumberTheory.java", "profiles": ["full", "contest"], "note": "Incluye primalidad determinista de 64 bits y CRT generalizado."},
+      {"id": "combinatorics", "title": "Combinatoria", "file": "src/main/java/notebook/Combinatorics.java", "profiles": ["full"], "note": "Resultados exactos con BigInteger."}
+    ]},
+    {"name": "Geometria", "entries": [
+      {"id": "geometry", "title": "Geometria plana", "file": "src/main/java/notebook/Geometry.java", "profiles": ["full"], "note": "Coordenadas double; usar predicados exactos cuando el problema lo exija."}
+    ]},
+    {"name": "Grafos", "entries": [
+      {"id": "graphs", "title": "Recorridos y caminos", "file": "src/main/java/notebook/Graphs.java", "profiles": ["full", "contest"], "requires": ["structures"], "note": "Grafos dirigidos por defecto; agregar ambas aristas para no dirigidos."},
+      {"id": "advanced-graphs", "title": "SCC, Bellman-Ford, LCA y flujo maximo", "file": "src/main/java/notebook/AdvancedGraphs.java", "profiles": ["full"], "requires": ["graphs"], "note": "Algoritmos de grafos avanzados; capacidades y distancias usan long."},
+      {"id": "cuts", "title": "Puentes y puntos de articulacion", "file": "src/main/java/notebook/UndirectedCuts.java", "profiles": ["full"], "note": "Admite aristas paralelas; DFS recursivo."}
+    ]},
+    {"name": "Teoria de juegos", "entries": [
+      {"id": "games", "title": "Nim, Grundy y minimax", "file": "src/main/java/notebook/GameTheory.java", "profiles": ["full"], "note": "Nim normal y estados Grundy aciclicos."}
+    ]}
+  ]
+}

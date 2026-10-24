@@ -1,0 +1,10 @@
+.idea/
+build/
+__pycache__/
+*.pyc
+*.class
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz

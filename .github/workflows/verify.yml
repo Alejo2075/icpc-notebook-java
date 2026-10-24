@@ -1,0 +1,26 @@
+name: Verify notebook
+on:
+  push:
+  pull_request:
+jobs:
+  java-and-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Install LaTeX and Poppler
+        run: sudo apt-get update && sudo apt-get install -y texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-lang-spanish latexmk poppler-utils
+      - name: Verify Java and build full notebook
+        run: scripts/build-notebook.sh full 25
+      - name: Build compact selection
+        run: scripts/build-notebook.sh contest 25
+      - name: Upload PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: icpc-notebook-java
+          path: |
+            output/pdf/icpc-notebook-java-full.pdf
+            output/pdf/icpc-notebook-java-contest.pdf

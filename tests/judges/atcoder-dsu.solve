@@ -1,0 +1,10 @@
+int n = in.nextInt();
+int q = in.nextInt();
+DataStructures.DSU dsu = new DataStructures.DSU(n);
+for (int i = 0; i < q; i++) {
+    int type = in.nextInt();
+    int u = in.nextInt();
+    int v = in.nextInt();
+    if (type == 0) dsu.union(u, v);
+    else out.println(dsu.find(u) == dsu.find(v) ? 1 : 0);
+}
