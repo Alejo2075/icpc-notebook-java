@@ -1,38 +1,1411 @@
 {
   "title": "ICPC Notebook Java",
-  "subtitle": "Team Reference",
+  "subtitle": "A progressive team reference for Java 17",
+  "conventions": [
+    "Vertices and arrays are zero-indexed.",
+    "Ranges are half-open [left, right) unless documented otherwise.",
+    "Check overflow, input bounds, and recursion depth before using a snippet.",
+    "Choose the simplest algorithm that fits the problem constraints."
+  ],
+  "quickReference": [
+    {
+      "signal": "Small sequence, simple condition",
+      "choice": "Direct scan or brute force",
+      "cost": "O(n) or O(n^2)",
+      "minLevel": "Beginner"
+    },
+    {
+      "signal": "Frequency or membership lookup",
+      "choice": "HashMap or HashSet",
+      "cost": "Expected O(1) per operation",
+      "minLevel": "Beginner"
+    },
+    {
+      "signal": "All subsets of a small set",
+      "choice": "Backtracking",
+      "cost": "O(2^n)",
+      "minLevel": "Beginner"
+    },
+    {
+      "signal": "Static interval sums",
+      "choice": "Prefix sums",
+      "cost": "O(n) build, O(1) query",
+      "minLevel": "Beginner"
+    },
+    {
+      "signal": "Point updates and interval sums",
+      "choice": "Fenwick or segment tree",
+      "cost": "O(log n) per operation",
+      "minLevel": "Intermediate"
+    },
+    {
+      "signal": "Range additions and interval sums",
+      "choice": "Lazy segment tree",
+      "cost": "O(log n) per operation",
+      "minLevel": "Intermediate"
+    },
+    {
+      "signal": "Unweighted graph or grid",
+      "choice": "Breadth-first search",
+      "cost": "O(V+E)",
+      "minLevel": "Beginner"
+    },
+    {
+      "signal": "Incremental connectivity",
+      "choice": "Disjoint set union",
+      "cost": "Almost O(1) amortized",
+      "minLevel": "Intermediate"
+    },
+    {
+      "signal": "Unweighted, 0/1, nonnegative paths",
+      "choice": "BFS, 0-1 BFS, Dijkstra",
+      "cost": "O(V+E) to O((V+E) log V)",
+      "minLevel": "Intermediate"
+    },
+    {
+      "signal": "Negative edges or all-pairs paths",
+      "choice": "Bellman-Ford, Floyd-Warshall",
+      "cost": "O(VE) or O(V^3)",
+      "minLevel": "Advanced"
+    },
+    {
+      "signal": "One pattern or many patterns",
+      "choice": "KMP, Z, Aho-Corasick",
+      "cost": "Linear in input size",
+      "minLevel": "Intermediate"
+    },
+    {
+      "signal": "Changing tree path sums",
+      "choice": "Heavy-light decomposition",
+      "cost": "O(log^2 n) per query",
+      "minLevel": "Advanced"
+    },
+    {
+      "signal": "Subset states",
+      "choice": "Bitmask dynamic programming",
+      "cost": "Often O(n^2 2^n)",
+      "minLevel": "Advanced"
+    },
+    {
+      "signal": "Large polynomial product",
+      "choice": "Number-theoretic transform",
+      "cost": "O(n log n)",
+      "minLevel": "Advanced"
+    },
+    {
+      "signal": "Many static distinct range queries",
+      "choice": "Mo ordering",
+      "cost": "Typical O((n+q) sqrt n)",
+      "minLevel": "Intermediate"
+    },
+    {
+      "signal": "Undo connectivity merges",
+      "choice": "Rollback DSU",
+      "cost": "O(log n) union/find",
+      "minLevel": "Advanced"
+    },
+    {
+      "signal": "Assign left items to right items",
+      "choice": "Hopcroft-Karp matching",
+      "cost": "O(E sqrt V)",
+      "minLevel": "Intermediate"
+    },
+    {
+      "signal": "Minimum of changing lines",
+      "choice": "Li Chao tree",
+      "cost": "O(log domain)",
+      "minLevel": "Advanced"
+    },
+    {
+      "signal": "Dense linear equations",
+      "choice": "Gaussian elimination",
+      "cost": "O(n^3)",
+      "minLevel": "Advanced"
+    },
+    {
+      "signal": "Dense minimum-cost assignment",
+      "choice": "Hungarian algorithm",
+      "cost": "O(n^2 m)",
+      "minLevel": "Intermediate"
+    },
+    {
+      "signal": "Binary pairwise energy with submodular costs",
+      "choice": "s-t graph cut",
+      "cost": "Max-flow dependent",
+      "minLevel": "Advanced"
+    },
+    {
+      "signal": "Large polynomial product with safe rounding",
+      "choice": "FFT convolution",
+      "cost": "O(n log n)",
+      "minLevel": "Advanced"
+    },
+    {
+      "signal": "Repeated nearest-neighbor queries in static 2D points",
+      "choice": "KD-tree",
+      "cost": "Average O(log n)",
+      "minLevel": "Advanced"
+    }
+  ],
   "chapters": [
-    {"name": "Plantilla y entrada", "entries": [
-      {"id": "template", "title": "Main de concurso", "file": "src/template/Main.java", "profiles": ["full", "contest"], "note": "Archivo unico listo para un juez en linea."},
-      {"id": "io", "title": "Entrada rapida", "file": "src/main/java/notebook/ContestIO.java", "profiles": ["full"], "note": "Tokens ASCII; devuelve null al terminar la entrada."}
-    ]},
-    {"name": "Estructuras de datos", "entries": [
-      {"id": "structures", "title": "DSU, Fenwick y segment tree", "file": "src/main/java/notebook/DataStructures.java", "profiles": ["full", "contest"], "note": "Indices desde cero e intervalos semiabiertos."}
-    ]},
-    {"name": "Busqueda y ordenamiento", "entries": [
-      {"id": "search", "title": "Busqueda binaria, ternaria y counting sort", "file": "src/main/java/notebook/SearchingSorting.java", "profiles": ["full"], "note": "Las busquedas requieren un arreglo ordenado."}
-    ]},
-    {"name": "Programacion dinamica", "entries": [
-      {"id": "dp", "title": "Patrones de programacion dinamica", "file": "src/main/java/notebook/DynamicProgramming.java", "profiles": ["full"], "note": "Incluye mochila 0/1, subsecuencias, cambio y particion."}
-    ]},
-    {"name": "Cadenas", "entries": [
-      {"id": "strings", "title": "KMP, Manacher, Boyer-Moore y Z", "file": "src/main/java/notebook/StringsAlgorithms.java", "profiles": ["full", "contest"], "note": "Opera sobre unidades UTF-16 de Java."},
-      {"id": "advanced-strings", "title": "Trie y rolling hash", "file": "src/main/java/notebook/AdvancedStrings.java", "profiles": ["full"], "note": "Hash doble; la igualdad de hashes no constituye una prueba exacta."}
-    ]},
-    {"name": "Matematicas", "entries": [
-      {"id": "math", "title": "Teoria de numeros", "file": "src/main/java/notebook/NumberTheory.java", "profiles": ["full", "contest"], "note": "Incluye primalidad determinista de 64 bits y CRT generalizado."},
-      {"id": "combinatorics", "title": "Combinatoria", "file": "src/main/java/notebook/Combinatorics.java", "profiles": ["full"], "note": "Resultados exactos con BigInteger."}
-    ]},
-    {"name": "Geometria", "entries": [
-      {"id": "geometry", "title": "Geometria plana", "file": "src/main/java/notebook/Geometry.java", "profiles": ["full"], "note": "Coordenadas double; usar predicados exactos cuando el problema lo exija."}
-    ]},
-    {"name": "Grafos", "entries": [
-      {"id": "graphs", "title": "Recorridos y caminos", "file": "src/main/java/notebook/Graphs.java", "profiles": ["full", "contest"], "requires": ["structures"], "note": "Grafos dirigidos por defecto; agregar ambas aristas para no dirigidos."},
-      {"id": "advanced-graphs", "title": "SCC, Bellman-Ford, LCA y flujo maximo", "file": "src/main/java/notebook/AdvancedGraphs.java", "profiles": ["full"], "requires": ["graphs"], "note": "Algoritmos de grafos avanzados; capacidades y distancias usan long."},
-      {"id": "cuts", "title": "Puentes y puntos de articulacion", "file": "src/main/java/notebook/UndirectedCuts.java", "profiles": ["full"], "note": "Admite aristas paralelas; DFS recursivo."}
-    ]},
-    {"name": "Teoria de juegos", "entries": [
-      {"id": "games", "title": "Nim, Grundy y minimax", "file": "src/main/java/notebook/GameTheory.java", "profiles": ["full"], "note": "Nim normal y estados Grundy aciclicos."}
-    ]}
-  ]
+    {
+      "name": "Contest setup",
+      "intro": "Start with a compilable single-file submission and fast input.",
+      "entries": [
+        {
+          "id": "template",
+          "title": "Standalone Main template",
+          "file": "src/template/Main.java",
+          "level": "Beginner",
+          "profiles": [
+            "beginner",
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Start a Java judge submission.",
+          "complexity": "Linear in the input size.",
+          "caution": "Use the exporter to include required helper classes.",
+          "study": {
+            "idea": "Start from a working input/output skeleton so effort stays on the algorithm.",
+            "example": "Read two integers, add them, and print one line.",
+            "practice": "Compile the template before inserting helper classes."
+          }
+        },
+        {
+          "id": "io",
+          "title": "Reusable fast input",
+          "file": "src/main/java/notebook/basics/ContestIO.java",
+          "level": "Beginner",
+          "profiles": [
+            "beginner",
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Read large ASCII-token input.",
+          "complexity": "Linear time; fixed-size buffer.",
+          "caution": "Not a Unicode decoder.",
+          "study": {
+            "idea": "Buffered token input reduces per-character overhead on large files.",
+            "example": "Read n, then process exactly n integers with nextInt().",
+            "practice": "Test EOF, negative values, and the final token without a newline."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Fundamentals",
+      "intro": "Arrays, windows, sorting, and binary search come first.",
+      "entries": [
+        {
+          "id": "arrays-intro",
+          "title": "Loops, arrays, prefix sums, and brute force",
+          "file": "src/main/java/notebook/basics/BeginnerArrays.java",
+          "level": "Beginner",
+          "when": "Process a sequence or test all small pairs.",
+          "complexity": "O(n) scans; O(n^2) pair search.",
+          "caution": "A prefix array has length n+1 and answers half-open ranges.",
+          "study": {
+            "idea": "A direct scan is often the clearest baseline. Prefix sums store the total before each index so one subtraction answers a range.",
+            "example": "For [3, -2, 5], prefix = [0, 3, 1, 6] and sum [1, 3) = 6 - 3 = 3.",
+            "practice": "Compare every range sum against a loop on small random arrays."
+          },
+          "profiles": [
+            "beginner",
+            "intermediate",
+            "advanced"
+          ]
+        },
+        {
+          "id": "collections-intro",
+          "title": "Maps, sets, and stacks",
+          "file": "src/main/java/notebook/basics/BeginnerCollections.java",
+          "level": "Beginner",
+          "when": "Count frequencies, remove duplicates, or check nested delimiters.",
+          "complexity": "Expected O(n) time for hash collections; O(n) stack space.",
+          "caution": "HashMap and HashSet have no guaranteed iteration order.",
+          "study": {
+            "idea": "A map stores a value for each key, a set stores membership, and a stack reverses the order in which items are processed.",
+            "example": "For [4,2,4], the frequency map stores 4 to 2 and 2 to 1. The string ([{}]) is balanced.",
+            "practice": "Solve a frequency-count problem with both a map and a sorted array, then compare the tradeoffs."
+          },
+          "profiles": [
+            "beginner",
+            "intermediate",
+            "advanced"
+          ]
+        },
+        {
+          "id": "backtracking-intro",
+          "title": "Recursion and exhaustive subsets",
+          "file": "src/main/java/notebook/basics/BeginnerBacktracking.java",
+          "level": "Beginner",
+          "when": "Enumerate all choices when n is small.",
+          "complexity": "O(n) factorial; O(2^n) subset search.",
+          "caution": "Exponential search is only practical for small n; recursion uses stack space.",
+          "study": {
+            "idea": "A recursive function solves a smaller instance, reaches a base case, then combines answers. For each subset element, branch into skip and take.",
+            "example": "For [1,2,3] and target 3, subsets [3] and [1,2] both match.",
+            "practice": "Draw the recursion tree for three values and mark its base cases."
+          },
+          "profiles": [
+            "beginner",
+            "intermediate",
+            "advanced"
+          ]
+        },
+        {
+          "id": "fundamentals",
+          "title": "Arrays and two pointers",
+          "file": "src/main/java/notebook/basics/Fundamentals.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Use prefix sums, differences, compression, windows, inversions, or permutations.",
+          "complexity": "O(n) to O(n log n).",
+          "caution": "Sliding-window sums require nonnegative values.",
+          "study": {
+            "idea": "Prefix, window, permutation, and inversion patterns replace repeated work with maintained state.",
+            "example": "A nonnegative window can grow right and shrink left while its sum is too large.",
+            "practice": "State the invariant before moving either pointer."
+          }
+        },
+        {
+          "id": "search",
+          "title": "Binary search and bounds",
+          "file": "src/main/java/notebook/basics/SearchingSorting.java",
+          "level": "Beginner",
+          "profiles": [
+            "beginner",
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Search sorted data or a monotone answer predicate.",
+          "complexity": "O(log n) search.",
+          "caution": "Sorted input and monotonicity are preconditions.",
+          "study": {
+            "idea": "Binary search keeps an interval that is guaranteed to contain the answer.",
+            "example": "For sorted [1, 2, 2, 5], lowerBound(2) is 1 and upperBound(2) is 3.",
+            "practice": "Test an empty array and targets below and above every element."
+          }
+        },
+        {
+          "id": "greedy-intro",
+          "title": "Interval scheduling and covering",
+          "file": "src/main/java/notebook/basics/BeginnerGreedy.java",
+          "level": "Beginner",
+          "when": "Select compatible intervals or cover intervals with few points.",
+          "complexity": "O(n log n) from sorting.",
+          "caution": "Scheduling uses half-open intervals; point covering uses closed intervals.",
+          "study": {
+            "idea": "Sort by earliest finishing time. Choosing an early finish leaves as much room as possible for later intervals.",
+            "example": "Among [0,3), [1,2), [2,4), choose the last two.",
+            "practice": "Try to prove the choice by exchanging an optimal first interval with the greedy one."
+          },
+          "profiles": [
+            "beginner",
+            "intermediate",
+            "advanced"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Range queries and data structures",
+      "intro": "Choose by update type, query type, and whether the data changes.",
+      "entries": [
+        {
+          "id": "structures",
+          "title": "DSU, Fenwick, and segment tree",
+          "file": "src/main/java/notebook/data_structures/DataStructures.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Track connectivity, point updates, or range sums.",
+          "complexity": "Almost O(1) DSU; O(log n) range operations.",
+          "caution": "Sums use long.",
+          "study": {
+            "idea": "Use DSU for merging groups, Fenwick for prefix sums with updates, and segment trees for general ranges.",
+            "example": "After union(0,1), find(0) and find(1) represent the same component.",
+            "practice": "Compare random updates and queries against a plain array."
+          }
+        },
+        {
+          "id": "range",
+          "title": "2D prefix sums, sparse table, lazy tree",
+          "file": "src/main/java/notebook/data_structures/RangeQueries.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Answer rectangle sums, immutable minima, or range additions.",
+          "complexity": "O(1) immutable queries; O(log n) lazy operations.",
+          "caution": "The sparse table supports idempotent minimum.",
+          "study": {
+            "idea": "Preprocessing trades build time and memory for faster repeated queries.",
+            "example": "A rectangle sum uses four 2D prefix values by inclusion-exclusion.",
+            "practice": "Check one-cell, whole-grid, and boundary rectangles."
+          }
+        },
+        {
+          "id": "rollback-dsu",
+          "title": "Rollback disjoint set union",
+          "file": "src/main/java/notebook/data_structures/RollbackDSU.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "when": "Undo connectivity merges during offline processing.",
+          "complexity": "O(log n) find and union.",
+          "caution": "No path compression.",
+          "study": {
+            "idea": "Record each successful union so it can be reversed.",
+            "example": "Merge 0-1, snapshot, merge 1-2, then roll back to separate 2.",
+            "practice": "Compare snapshots against rebuilt components."
+          }
+        },
+        {
+          "id": "fenwick-2d",
+          "title": "Two-dimensional Fenwick tree",
+          "file": "src/main/java/notebook/data_structures/Fenwick2D.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Update cells and query rectangle sums.",
+          "complexity": "O(log rows * log columns).",
+          "caution": "Zero-based half-open rectangles.",
+          "study": {
+            "idea": "Nested Fenwick loops aggregate a rectangle through four prefixes.",
+            "example": "Update (1,2), then query a rectangle containing that cell.",
+            "practice": "Compare random rectangles against a matrix."
+          }
+        },
+        {
+          "id": "mo-queries",
+          "title": "Mo offline distinct queries",
+          "file": "src/main/java/notebook/data_structures/MoQueries.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Answer many static range distinct queries.",
+          "complexity": "Typical O((n+q) sqrt n).",
+          "caution": "All queries must be known in advance.",
+          "study": {
+            "idea": "Order queries by left block to limit pointer movement.",
+            "example": "For [1,2,1], distinct [0,3) is 2.",
+            "practice": "Compare with a HashSet on small arrays."
+          }
+        },
+        {
+          "id": "li-chao",
+          "title": "Li Chao line container",
+          "file": "src/main/java/notebook/data_structures/LiChaoTree.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "when": "Query the minimum of lines at known coordinates.",
+          "complexity": "O(log domain) per operation.",
+          "caution": "Register every x and avoid long overflow.",
+          "study": {
+            "idea": "Keep the better line at the midpoint and send the other toward the side where it may win.",
+            "example": "For y=x and y=-x, the minimum at x=3 is -3.",
+            "practice": "Compare against direct line evaluation."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dynamic programming",
+      "intro": "State, transition, base case, and iteration order should be explicit.",
+      "entries": [
+        {
+          "id": "dp-intro",
+          "title": "First dynamic programs",
+          "file": "src/main/java/notebook/dynamic_programming/BeginnerDynamicProgramming.java",
+          "level": "Beginner",
+          "when": "Reuse answers to smaller states for sequences, coin change, or grids.",
+          "complexity": "O(n), O(amount * coin types), or O(rows * columns).",
+          "caution": "Path counts can overflow long; coin denominations must be positive.",
+          "study": {
+            "idea": "Define the state, base case, transition, and answer before writing loops. An iterative table avoids repeated recursion.",
+            "example": "For coins 1, 3, 4, amount 6 needs two coins: 3 + 3.",
+            "practice": "Write a table by hand for a small input and compare it with the program."
+          },
+          "profiles": [
+            "beginner",
+            "intermediate",
+            "advanced"
+          ]
+        },
+        {
+          "id": "dp",
+          "title": "Classic DP patterns",
+          "file": "src/main/java/notebook/dynamic_programming/DynamicProgramming.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Solve knapsack, subsequence, edit, partition, and counting problems.",
+          "complexity": "Often O(n*capacity) or O(n^2).",
+          "caution": "Counts can exceed long.",
+          "study": {
+            "idea": "Many contest DPs differ only in the state and transition; order must respect dependencies.",
+            "example": "In 0/1 knapsack, iterate capacity downward so an item is used at most once.",
+            "practice": "Write a brute-force subset oracle for small n."
+          }
+        },
+        {
+          "id": "advanced-dp",
+          "title": "Subset, interval, scheduling, digit DP",
+          "file": "src/main/java/notebook/dynamic_programming/AdvancedDynamicProgramming.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "when": "Use richer states than one-dimensional DP.",
+          "complexity": "O(n^2 2^n), O(n^3), or O(n log n).",
+          "caution": "Traveling salesperson limits n to 20.",
+          "study": {
+            "idea": "Bitmasks, intervals, and digits provide compact state descriptions for harder counting and optimization.",
+            "example": "A TSP mask records visited vertices, while last records the final vertex.",
+            "practice": "Estimate states and memory before allocating a table."
+          }
+        },
+        {
+          "id": "knuth-optimization",
+          "title": "Knuth optimized adjacent merging",
+          "file": "src/main/java/notebook/dynamic_programming/KnuthOptimization.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "when": "Minimize adjacent merge cost for nonnegative weights.",
+          "complexity": "O(n^2) time and space.",
+          "caution": "Split monotonicity depends on this recurrence.",
+          "study": {
+            "idea": "Optimal split positions lie between those of neighboring intervals.",
+            "example": "Weights [1,2,3] have optimal cost 9.",
+            "practice": "Compare against cubic interval DP."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Graphs",
+      "intro": "Distinguish directed and undirected edges before choosing an algorithm.",
+      "entries": [
+        {
+          "id": "graphs-intro",
+          "title": "Adjacency lists, BFS, and grid flood fill",
+          "file": "src/main/java/notebook/graphs/BeginnerGraphs.java",
+          "level": "Beginner",
+          "when": "Explore an unweighted graph or count regions in a grid.",
+          "complexity": "O(V+E) for graphs; O(rows * columns) for grids.",
+          "caution": "For undirected graphs, insert both directions; BFS distance counts edges.",
+          "study": {
+            "idea": "An adjacency list stores each vertex's neighbors. BFS visits vertices in layers, so its first visit gives the shortest unweighted distance.",
+            "example": "For edges 0-1 and 1-2, BFS from 0 returns distances 0, 1, 2.",
+            "practice": "Draw a graph with an unreachable vertex and check the returned -1 distance."
+          },
+          "profiles": [
+            "beginner",
+            "intermediate",
+            "advanced"
+          ]
+        },
+        {
+          "id": "graphs",
+          "title": "Traversal, shortest paths, MST",
+          "file": "src/main/java/notebook/graphs/Graphs.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "requires": [
+            "structures"
+          ],
+          "when": "Use BFS, DFS, topological order, Dijkstra, or Kruskal.",
+          "complexity": "O(V+E) to O(E log V).",
+          "caution": "Dijkstra requires nonnegative weights.",
+          "study": {
+            "idea": "Represent edges explicitly, then select traversal or optimization from the weight rules.",
+            "example": "BFS finds unweighted distances; Dijkstra extends this to nonnegative weights.",
+            "practice": "Test disconnected vertices and parallel edges."
+          }
+        },
+        {
+          "id": "graph-essentials",
+          "title": "Components, bipartite, 0-1 BFS, Floyd, Euler",
+          "file": "src/main/java/notebook/graphs/GraphEssentials.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "requires": [
+            "graphs"
+          ],
+          "when": "Handle graph properties and special shortest paths.",
+          "complexity": "Usually O(V+E); Floyd is O(V^3).",
+          "caution": "Undirected edges require both directions.",
+          "study": {
+            "idea": "Special graph structure can make a hard general problem simpler.",
+            "example": "A deque handles 0-weight edges at the front and 1-weight edges at the back.",
+            "practice": "Compare 0-1 BFS against Dijkstra on small graphs."
+          }
+        },
+        {
+          "id": "advanced-graphs",
+          "title": "SCC, Bellman-Ford, LCA, max flow",
+          "file": "src/main/java/notebook/graphs/AdvancedGraphs.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "requires": [
+            "graphs"
+          ],
+          "when": "Analyze directed components, negative edges, ancestors, or flow.",
+          "complexity": "O(V+E) to O(VE), depending on method.",
+          "caution": "Bellman-Ford rejects reachable negative cycles.",
+          "study": {
+            "idea": "SCCs compress directed cycles; flow and ancestor structures answer different global questions.",
+            "example": "Condensing each SCC produces a directed acyclic graph.",
+            "practice": "Draw a graph with two SCCs and one edge between them."
+          }
+        },
+        {
+          "id": "cuts",
+          "title": "Bridges and articulation points",
+          "file": "src/main/java/notebook/graphs/UndirectedCuts.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "when": "Find critical edges or vertices in undirected graphs.",
+          "complexity": "O(V+E).",
+          "caution": "Recursive DFS may exhaust the Java stack.",
+          "study": {
+            "idea": "DFS discovery and low-link times reveal edges and vertices whose removal disconnects a graph.",
+            "example": "A tree edge is a bridge when the child cannot reach an ancestor of its parent.",
+            "practice": "Remove each edge in a tiny graph and compare component counts."
+          }
+        },
+        {
+          "id": "two-sat",
+          "title": "2-SAT",
+          "file": "src/main/java/notebook/graphs/TwoSat.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "requires": [
+            "advanced-graphs"
+          ],
+          "when": "Solve Boolean formulas with two-literal clauses.",
+          "complexity": "O(variables + clauses).",
+          "caution": "The API uses variable indices and Boolean values.",
+          "study": {
+            "idea": "Translate each clause into implications, then test whether a variable and its negation share an SCC.",
+            "example": "The clause a OR b gives implications not-a to b and not-b to a.",
+            "practice": "Enumerate all assignments for formulas with at most ten variables."
+          }
+        },
+        {
+          "id": "min-cost-flow",
+          "title": "Minimum-cost flow",
+          "file": "src/main/java/notebook/graphs/MinCostFlow.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "when": "Optimize flow cost under capacity limits.",
+          "complexity": "Depends on the number of augmentations.",
+          "caution": "Initial edge costs must be nonnegative.",
+          "study": {
+            "idea": "Residual reverse edges allow a later path to undo an earlier choice.",
+            "example": "After augmenting, add reverse capacity with the negated edge cost.",
+            "practice": "Check a case where rerouting improves the total cost."
+          }
+        },
+        {
+          "id": "matching",
+          "title": "Bipartite matching and vertex cover",
+          "file": "src/main/java/notebook/graphs/BipartiteMatching.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Assign left vertices to right vertices.",
+          "complexity": "O(E sqrt V) matching.",
+          "caution": "The DFS phase is recursive.",
+          "study": {
+            "idea": "Layered augmenting paths build a maximum matching; alternating reachability gives a minimum cover.",
+            "example": "Edges 0-a, 1-a, 1-b allow a matching of size two.",
+            "practice": "Brute-force tiny matchings and validate the cover."
+          }
+        },
+        {
+          "id": "global-min-cut",
+          "title": "Global minimum cut",
+          "file": "src/main/java/notebook/graphs/GlobalMinCut.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "when": "Find the lightest undirected weighted cut.",
+          "complexity": "O(V^3) time.",
+          "caution": "Symmetric nonnegative matrix; sums fit long.",
+          "study": {
+            "idea": "Stoer-Wagner grows a tight set and contracts its last two vertices.",
+            "example": "Two vertices joined by weight 7 have cut weight 7.",
+            "practice": "Enumerate all vertex subsets on tiny graphs."
+          }
+        },
+        {
+          "id": "matrix-tree",
+          "title": "Exact spanning-tree count",
+          "file": "src/main/java/notebook/graphs/MatrixTreeTheorem.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "when": "Count spanning trees of an undirected multigraph.",
+          "complexity": "O(V^3) BigInteger arithmetic.",
+          "caution": "Dense exact arithmetic grows quickly; self-loops do not contribute.",
+          "study": {
+            "idea": "Kirchhoff removes one row and column of the graph Laplacian and takes the determinant.",
+            "example": "A triangle has three spanning trees.",
+            "practice": "Enumerate edge subsets for small multigraphs."
+          }
+        },
+        {
+          "id": "minimum-cost-assignment",
+          "title": "Minimum-cost assignment",
+          "file": "src/main/java/notebook/graphs/HungarianAlgorithm.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Assign every worker to a distinct task at minimum total cost.",
+          "complexity": "O(rows^2 * columns) for rows <= columns.",
+          "caution": "Dense matrix model; arithmetic overflow is reported.",
+          "study": {
+            "idea": "Dual potentials maintain nonnegative reduced costs while augmenting the assignment.",
+            "example": "For [[4,1,3],[2,0,5]], the minimum assignment cost is 3.",
+            "practice": "Compare all column permutations for matrices with at most seven rows."
+          }
+        },
+        {
+          "id": "binary-graph-cut",
+          "title": "Binary submodular energy minimization",
+          "file": "src/main/java/notebook/graphs/BinaryGraphCut.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "when": "Minimize unary label costs plus pairwise submodular penalties.",
+          "complexity": "Dinic max-flow; runtime depends on graph shape.",
+          "caution": "Every pair must satisfy E00+E11 <= E01+E10; long arithmetic must fit.",
+          "study": {
+            "idea": "Rewrite each pair table as unary terms and a nonnegative directed cut edge.",
+            "example": "A pairwise disagreement penalty encourages adjacent labels to agree.",
+            "practice": "Enumerate all 2^n labelings on small instances and compare energy."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Trees",
+      "intro": "Euler order, ancestors, and path decomposition exploit the absence of cycles.",
+      "entries": [
+        {
+          "id": "trees",
+          "title": "Diameter, Euler tour, heavy-light",
+          "file": "src/main/java/notebook/trees/TreeAlgorithms.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "requires": [
+            "graphs",
+            "structures"
+          ],
+          "when": "Work with subtree intervals or changing path sums.",
+          "complexity": "O(n) setup; O(log^2 n) path queries.",
+          "caution": "Heavy-light setup is recursive and expects a tree.",
+          "study": {
+            "idea": "A tree path has unique structure; Euler order turns subtrees into intervals.",
+            "example": "Heavy-light decomposition breaks a path into a logarithmic number of chains.",
+            "practice": "Compare path sums against a simple parent walk on small random trees."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Strings",
+      "intro": "Choose a one-pattern, many-pattern, palindrome, or suffix method.",
+      "entries": [
+        {
+          "id": "strings-intro",
+          "title": "Characters, frequencies, and direct matching",
+          "file": "src/main/java/notebook/strings/BeginnerStrings.java",
+          "level": "Beginner",
+          "when": "Count letters, test palindromes, or match a short pattern.",
+          "complexity": "O(n) scans; O(nm) direct matching.",
+          "caution": "Java char values are UTF-16 code units; the frequency helper accepts a-z only.",
+          "study": {
+            "idea": "A string is an indexed sequence. Start with direct comparisons before choosing a faster string algorithm.",
+            "example": "The pattern aa occurs three times in aaaa because matches can overlap.",
+            "practice": "Test an empty text, one character, and overlapping matches."
+          },
+          "profiles": [
+            "beginner",
+            "intermediate",
+            "advanced"
+          ]
+        },
+        {
+          "id": "strings",
+          "title": "KMP, Manacher, Boyer-Moore, Z",
+          "file": "src/main/java/notebook/strings/StringsAlgorithms.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Search one pattern or find the longest palindrome.",
+          "complexity": "Linear for KMP, Manacher, and Z.",
+          "caution": "Uses Java UTF-16 code units.",
+          "study": {
+            "idea": "Prefix, Z, and palindrome arrays summarize repeated character comparisons.",
+            "example": "The prefix function at i gives the longest proper border of the prefix ending at i.",
+            "practice": "Compare matches with direct substring search on random short strings."
+          }
+        },
+        {
+          "id": "advanced-strings",
+          "title": "Trie and rolling hash",
+          "file": "src/main/java/notebook/strings/AdvancedStrings.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Store prefixes or compare substrings quickly.",
+          "complexity": "O(total characters) build; O(1) hash query.",
+          "caution": "Hash equality is probabilistic.",
+          "study": {
+            "idea": "A trie shares common prefixes; rolling hash compresses a substring into modular values.",
+            "example": "Words car and cat share the c-a prefix nodes in a trie.",
+            "practice": "Use direct string comparison when a hash collision would be unacceptable."
+          }
+        },
+        {
+          "id": "suffix",
+          "title": "Suffix array and LCP",
+          "file": "src/main/java/notebook/strings/SuffixAlgorithms.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "when": "Order suffixes or count distinct substrings.",
+          "complexity": "O(n log^2 n) array; O(n) LCP.",
+          "caution": "Comparison sorting is simple but slower.",
+          "study": {
+            "idea": "Sorting suffixes turns substring questions into adjacent comparisons.",
+            "example": "Every repeated substring appears as a prefix of at least two neighboring suffixes.",
+            "practice": "Compare distinct-substring counts against a set of all substrings for short text."
+          }
+        },
+        {
+          "id": "aho",
+          "title": "Aho-Corasick",
+          "file": "src/main/java/notebook/strings/AhoCorasick.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "when": "Match many patterns against text.",
+          "complexity": "Linear in text and automaton size.",
+          "caution": "Lowercase a-z only.",
+          "study": {
+            "idea": "Failure links let multiple pattern searches share work while scanning text once.",
+            "example": "Patterns he and she can both finish during a scan of she.",
+            "practice": "Test duplicate patterns and patterns that are suffixes of other patterns."
+          }
+        },
+        {
+          "id": "minimum-rotation",
+          "title": "Minimum cyclic rotation",
+          "file": "src/main/java/notebook/strings/StringExtensions.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Find a lexicographically smallest rotation.",
+          "complexity": "O(n) time.",
+          "caution": "Uses Java UTF-16 code units.",
+          "study": {
+            "idea": "Booth discards candidate starts after each mismatch.",
+            "example": "The minimum rotation of bba is abb.",
+            "practice": "Compare all rotations on short strings."
+          }
+        },
+        {
+          "id": "suffix-automaton",
+          "title": "Suffix automaton",
+          "file": "src/main/java/notebook/strings/SuffixAutomaton.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "when": "Count distinct substrings or find a longest common substring.",
+          "complexity": "Expected O(n) build.",
+          "caution": "HashMap transitions use UTF-16 code units.",
+          "study": {
+            "idea": "Clone states preserve suffix links when an equivalence class splits.",
+            "example": "The string aba has five distinct nonempty substrings.",
+            "practice": "Compare against a set of all short substrings."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Number theory and combinatorics",
+      "intro": "Use exact or modular arithmetic according to the requested result.",
+      "entries": [
+        {
+          "id": "math-intro",
+          "title": "GCD, trial division, divisors, and powers",
+          "file": "src/main/java/notebook/mathematics/BeginnerMath.java",
+          "level": "Beginner",
+          "when": "Solve small divisibility and integer arithmetic tasks.",
+          "complexity": "GCD O(log n); trial division O(sqrt n); power O(log exponent).",
+          "caution": "Exact power reports long overflow; inputs to gcd must be nonnegative.",
+          "study": {
+            "idea": "A divisor larger than the square root has a matching smaller divisor. Euclid repeatedly replaces (a,b) by (b,a mod b).",
+            "example": "The divisors of 36 come in pairs around 6, giving nine positive divisors.",
+            "practice": "Compare trial-division results with direct enumeration for small values."
+          },
+          "profiles": [
+            "beginner",
+            "intermediate",
+            "advanced"
+          ]
+        },
+        {
+          "id": "math",
+          "title": "GCD, modular arithmetic, primality, CRT",
+          "file": "src/main/java/notebook/mathematics/NumberTheory.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Work with divisibility, primes, congruences, or roots.",
+          "complexity": "Euclid O(log n); sieve O(n log log n).",
+          "caution": "Overflow-safe modular multiplication trades speed for range.",
+          "study": {
+            "idea": "Choose the correct number representation and modulus before applying arithmetic routines.",
+            "example": "Euclid finds gcd; the extended form also gives coefficients for modular inverses.",
+            "practice": "Compare modular operations against BigInteger on boundary inputs."
+          }
+        },
+        {
+          "id": "number-theory-advanced",
+          "title": "Factors, phi, inverse, modular nCr, matrices",
+          "file": "src/main/java/notebook/mathematics/NumberTheoryAdvanced.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "requires": [
+            "math"
+          ],
+          "when": "Factor integers or exponentiate recurrences.",
+          "complexity": "O(sqrt n) factorization; O(k^3 log exponent) matrices.",
+          "caution": "PrimeCombinations needs a prime modulus greater than its limit.",
+          "study": {
+            "idea": "Precomputation pays off when many factor or binomial queries share the same limits.",
+            "example": "A smallest-prime-factor table decomposes 84 as 2 squared times 3 times 7.",
+            "practice": "Compare factorization and totient against direct small-number implementations."
+          }
+        },
+        {
+          "id": "combinatorics",
+          "title": "Exact binomial and Catalan numbers",
+          "file": "src/main/java/notebook/mathematics/Combinatorics.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Compute counts beyond long range.",
+          "complexity": "O(n) BigInteger operations.",
+          "caution": "BigInteger is exact but allocates memory.",
+          "study": {
+            "idea": "BigInteger keeps exact counts when the answer does not fit a primitive type.",
+            "example": "The number of ways to choose 2 from 5 is 10.",
+            "practice": "Check symmetry C(n,k) = C(n,n-k)."
+          }
+        },
+        {
+          "id": "modular-extras",
+          "title": "Discrete log, modular root, Mobius",
+          "file": "src/main/java/notebook/mathematics/ModularExtras.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "when": "Solve multiplicative congruences and inversion problems.",
+          "complexity": "O(sqrt modulus) discrete log; O(n) Mobius sieve.",
+          "caution": "Discrete log needs a coprime base; roots need a prime modulus.",
+          "study": {
+            "idea": "Baby-step giant-step trades memory for speed; Tonelli-Shanks extracts roots.",
+            "example": "Modulo 7, 3 squared equals 2.",
+            "practice": "Compare against exhaustive small powers and squares."
+          }
+        },
+        {
+          "id": "combinatorics-extras",
+          "title": "Derangements, Stirling, partitions, Burnside",
+          "file": "src/main/java/notebook/mathematics/CombinatoricsExtras.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Count permutations, set partitions, and necklaces.",
+          "complexity": "O(n) to O(n sqrt n) BigInteger work.",
+          "caution": "Exact answers can become very large.",
+          "study": {
+            "idea": "Recurrences and Burnside count objects without enumerating them.",
+            "example": "There are 44 derangements of five items.",
+            "practice": "Enumerate tiny objects and compare counts."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Polynomial methods",
+      "intro": "Convolution accelerates counting and polynomial tasks.",
+      "entries": [
+        {
+          "id": "ntt",
+          "title": "Number-theoretic transform",
+          "file": "src/main/java/notebook/numerical/Convolution.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "requires": [
+            "math"
+          ],
+          "when": "Multiply large polynomials modulo 998244353.",
+          "complexity": "O(n log n).",
+          "caution": "Transform length must not exceed 2^23.",
+          "study": {
+            "idea": "A transform changes polynomial multiplication into pointwise multiplication under a suitable prime.",
+            "example": "Coefficients [1,2] times [3,4] become [3,10,8].",
+            "practice": "Compare small random convolutions against the quadratic method."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Numerical methods",
+      "intro": "Solve dense systems, multiply polynomials, and use transforms when their assumptions fit.",
+      "entries": [
+        {
+          "id": "linear-algebra",
+          "title": "Gaussian elimination and determinant",
+          "file": "src/main/java/notebook/numerical/LinearAlgebra.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "when": "Solve dense real systems or compute determinants.",
+          "complexity": "O(n^3) for square matrices.",
+          "caution": "Absolute epsilon can misclassify near-singular systems.",
+          "study": {
+            "idea": "Pivot on the largest coefficient and eliminate the column.",
+            "example": "Equations 2x+y=5 and x-y=1 give x=2, y=1.",
+            "practice": "Multiply the solution back and check residuals."
+          }
+        },
+        {
+          "id": "subset-transforms",
+          "title": "Subset zeta, Mobius, and XOR transforms",
+          "file": "src/main/java/notebook/numerical/SubsetTransforms.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "when": "Aggregate values over all submasks or XOR combinations.",
+          "complexity": "O(k*2^k) for k bits.",
+          "caution": "Array length must be a power of two; long sums may overflow.",
+          "study": {
+            "idea": "Each bit doubles the group of masks that contributes to an aggregate.",
+            "example": "For f[0]=1 and f[1]=2, zeta gives [1,3].",
+            "practice": "Compare every transformed mask with direct submask enumeration."
+          }
+        },
+        {
+          "id": "fft",
+          "title": "Fast Fourier transform convolution",
+          "file": "src/main/java/notebook/numerical/FastFourierTransform.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "when": "Multiply long coefficient arrays when floating-point rounding is safe.",
+          "complexity": "O(n log n) for a power-of-two padded length.",
+          "caution": "Floating-point rounding is approximate; use NTT for exact modular answers.",
+          "study": {
+            "idea": "The FFT turns polynomial multiplication into pointwise multiplication in frequency space.",
+            "example": "The convolution of [1,2] and [3,4] is [3,10,8].",
+            "practice": "Compare with quadratic multiplication using small coefficients."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Geometry",
+      "intro": "Use floating-point distances and exact integer predicates as appropriate.",
+      "entries": [
+        {
+          "id": "geometry",
+          "title": "Distance, polygons, hull, closest pair",
+          "file": "src/main/java/notebook/geometry/Geometry.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Measure and optimize among planar points.",
+          "complexity": "O(n) to O(n log^2 n).",
+          "caution": "Floating-point orientation is unstable near collinearity.",
+          "study": {
+            "idea": "Sort and orient points carefully; choose exact predicates when coordinates are integral.",
+            "example": "A convex hull removes interior points before farthest-pair search.",
+            "practice": "Test duplicate and collinear points."
+          }
+        },
+        {
+          "id": "geometry-exact",
+          "title": "Exact orientation and intersection",
+          "file": "src/main/java/notebook/geometry/GeometryAdvanced.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "when": "Need robust integer geometry predicates.",
+          "complexity": "O(1) predicates; O(n) polygon queries.",
+          "caution": "BigInteger avoids overflow but allocates.",
+          "study": {
+            "idea": "Compute cross products with BigInteger so integer orientation never silently overflows.",
+            "example": "The sign of the cross product distinguishes left turn, right turn, and collinearity.",
+            "practice": "Test segments sharing an endpoint and nearly collinear large coordinates."
+          }
+        },
+        {
+          "id": "circle-geometry",
+          "title": "Lines, segments, and circle intersections",
+          "file": "src/main/java/notebook/geometry/CircleGeometry.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Measure distances or intersect lines and circles.",
+          "complexity": "O(1) per primitive.",
+          "caution": "Coincident circles have infinitely many intersections.",
+          "study": {
+            "idea": "Projection and the common chord solve these primitives.",
+            "example": "Unit circles centered at (0,0) and (2,0) touch at (1,0).",
+            "practice": "Test tangent, disjoint, and degenerate cases."
+          }
+        },
+        {
+          "id": "kd-tree",
+          "title": "Two-dimensional KD-tree nearest neighbor",
+          "file": "src/main/java/notebook/geometry/KDTree2D.java",
+          "level": "Advanced",
+          "profiles": [
+            "advanced"
+          ],
+          "when": "Find the nearest point repeatedly in a static 2D point set.",
+          "complexity": "O(n log^2 n) build; average O(log n), worst O(n) per query.",
+          "caution": "Worst-case query is linear and squared distances can overflow double.",
+          "study": {
+            "idea": "Alternating coordinate partitions create boxes that can be pruned by distance lower bounds.",
+            "example": "For points (0,0) and (4,0), query (3,0) returns the second point.",
+            "practice": "Compare random queries with a full scan and include duplicate points."
+          }
+        },
+        {
+          "id": "geometry-3d",
+          "title": "3D vectors and spherical distance",
+          "file": "src/main/java/notebook/geometry/Geometry3D.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Compute vector products, tetrahedron volume, or distance on a sphere.",
+          "complexity": "O(1) per operation.",
+          "caution": "Latitude uses degrees; spherical distance assumes a mean Earth radius.",
+          "study": {
+            "idea": "Dot and cross products extend orientation and area calculations to three dimensions.",
+            "example": "The cross product of (1,0,0) and (0,1,0) is (0,0,1).",
+            "practice": "Check orthogonality with dot products and compare great-circle distances with known locations."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Game theory",
+      "intro": "Model legal moves and terminal states before applying xor or mex.",
+      "entries": [
+        {
+          "id": "games",
+          "title": "Nim, mex, Grundy, minimax",
+          "file": "src/main/java/notebook/game_theory/GameTheory.java",
+          "level": "Intermediate",
+          "profiles": [
+            "intermediate",
+            "advanced"
+          ],
+          "when": "Analyze impartial games or complete binary game trees.",
+          "complexity": "O(piles), O(edges), or O(leaves).",
+          "caution": "Nim assumes normal play.",
+          "study": {
+            "idea": "For impartial normal-play games, a zero xor of Grundy values is losing.",
+            "example": "Nim heaps of sizes 1, 2, and 3 have xor zero.",
+            "practice": "Enumerate all moves in a tiny game to verify Grundy labels."
+          }
+        }
+      ]
+    }
+  ],
+  "profileGuides": {
+    "beginner": {
+      "audience": "Teams learning to turn a problem statement into loops, data structures, and a correct first solution.",
+      "prerequisites": "Java variables, methods, arrays, loops, conditionals, and basic input/output.",
+      "goals": [
+        "Read constraints and estimate whether O(n), O(n log n), or O(n^2) fits.",
+        "Implement and test simple loops, prefix sums, sorting, and direct search.",
+        "Recognize a correct greedy choice and the four parts of a dynamic program.",
+        "Represent a graph and use BFS for unweighted distances."
+      ],
+      "practice": "For each pattern, solve one small problem directly, test empty and boundary inputs, then explain the invariant in one sentence."
+    },
+    "intermediate": {
+      "audience": "Teams comfortable with basics and ready to select standard algorithms under contest constraints.",
+      "prerequisites": "The beginner reference, asymptotic notation, sorting, BFS, and simple dynamic programming.",
+      "goals": [
+        "Choose between static prefix queries and update-capable trees.",
+        "State graph direction and weight assumptions before selecting a path algorithm.",
+        "Design DP states, transitions, and iteration order.",
+        "Use string matching and number theory with explicit numeric bounds.",
+        "Use offline queries, bipartite matching, and circle primitives.",
+        "Solve dense assignment problems and use three-dimensional vector operations."
+      ],
+      "practice": "Compare a fast method against a brute-force oracle on random small cases; record the first failing seed."
+    },
+    "advanced": {
+      "audience": "Teams preparing for problems that combine several techniques or require specialized algorithms.",
+      "prerequisites": "The intermediate reference, graph traversal, DP, modular arithmetic, and proof by invariant.",
+      "goals": [
+        "Recognize reductions to flows, satisfiability, tree paths, and convolution.",
+        "Check hidden assumptions such as negative costs and recursion depth.",
+        "Estimate both asymptotic cost and Java memory overhead.",
+        "Validate complex algorithms with adversarial and differential tests.",
+        "Check specialized data structures and numerical preconditions before use.",
+        "Model submodular binary energies as graph cuts and select FFT or NTT by precision needs."
+      ],
+      "practice": "For each advanced method, write the invariant and construct a small case that breaks an incorrect implementation."
+    }
+  },
+  "learningNotes": {
+    "beginner": [
+      {
+        "title": "Read constraints before coding",
+        "idea": "A solution is useful only when it fits the input size. One loop over n items is O(n); nested loops over every pair are O(n^2). Sorting is usually O(n log n). Exponential subset enumeration becomes expensive quickly.",
+        "example": "At n = 2,000, trying roughly four million pairs may be reasonable; at n = 200,000, forty billion pairs are not. Check the actual time limit and Java overhead.",
+        "exercise": "For each problem, write n and a rough operation count next to the proposed approach."
+      },
+      {
+        "title": "Move from a baseline to a faster method",
+        "idea": "First state a simple correct method. Identify repeated work, then reuse it with a prefix array, sorted order, a map, or a maintained state. Keep the baseline as a test oracle for tiny cases.",
+        "example": "Summing each query interval with a loop costs O(length). Building prefix sums once costs O(n), then each interval needs one subtraction.",
+        "exercise": "Implement both methods and compare every interval on a short random array."
+      },
+      {
+        "title": "State the invariant",
+        "idea": "An invariant describes what remains true after each loop step. It helps prove that a scan, binary search, queue, or greedy choice is correct.",
+        "example": "During BFS, every queued vertex has a known shortest distance, and vertices leave the queue in nondecreasing distance.",
+        "exercise": "Explain why the first discovered path to a vertex has the fewest edges."
+      },
+      {
+        "title": "Check boundaries systematically",
+        "idea": "Test the smallest legal size, empty containers when permitted, duplicate values, negative values, and the largest numeric result. Keep zero-based indices and half-open ranges explicit.",
+        "example": "For prefix sums of three values, prefix has four entries; the whole array is [0,3), and an empty range is [2,2).",
+        "exercise": "Write tests for an empty array, one value, and a range ending at n."
+      }
+    ],
+    "intermediate": [
+      {
+        "title": "Select by operations, not by name",
+        "idea": "A data structure is defined by the updates and queries it supports. Prefix sums answer static sums. Fenwick trees handle point updates and prefix sums. Lazy trees handle range updates.",
+        "example": "If queries ask for sums after changing one index, a static prefix array requires rebuilding; a Fenwick tree changes O(log n) cells.",
+        "exercise": "List the update and query type before choosing a data structure."
+      },
+      {
+        "title": "Design a dynamic program",
+        "idea": "Write the state meaning, base cases, transition, iteration order, and output location. Check whether the transition reuses a state from the current iteration.",
+        "example": "In 0/1 knapsack, descending capacity prevents using one item twice; ascending capacity instead models unbounded use.",
+        "exercise": "Derive a small table by hand and compare with the implementation."
+      },
+      {
+        "title": "Match graph assumptions to algorithms",
+        "idea": "Unweighted edges favor BFS, 0/1 weights favor deque-based BFS, nonnegative weights permit Dijkstra, and negative weights require a different method. Directedness and disconnected vertices also matter.",
+        "example": "A weight of -1 invalidates Dijkstra even if most edges are positive.",
+        "exercise": "For each graph problem, write direction, weight range, number of vertices, and number of edges."
+      }
+    ],
+    "advanced": [
+      {
+        "title": "Recognize the reduction",
+        "idea": "Advanced problems often hide a standard model. Decide whether the objects are vertices, intervals, states, Boolean literals, flow units, or polynomial coefficients.",
+        "example": "Choosing compatible assignments with pairwise either-or constraints may become 2-SAT; routing units at minimum total cost may become min-cost flow.",
+        "exercise": "Describe the model and prove each problem constraint is represented exactly once."
+      },
+      {
+        "title": "Budget both asymptotics and memory",
+        "idea": "In Java, an O(n^2) table may be limited by object headers and array references as well as cell count. Recursive graph traversals may hit the call stack before time becomes a problem.",
+        "example": "A 2^20 by 20 long table contains about 160 MiB of values before array overhead.",
+        "exercise": "Estimate bytes and calls for the largest case before selecting an implementation."
+      },
+      {
+        "title": "Validate the difficult invariant",
+        "idea": "Use a slower oracle on small inputs, preserve failing seeds, and include adversarial cases. State preconditions such as nonnegative initial costs, prime modulus, and coordinate range.",
+        "example": "Compare an NTT product with O(nm) multiplication for random short polynomials.",
+        "exercise": "Construct a case with duplicates, disconnected components, or a later residual reroute."
+      }
+    ]
+  },
+  "guidedProblems": {
+    "beginner": [
+      {
+        "title": "Answer many range sums",
+        "task": "Given values [3, -2, 5, 4], answer sums for half-open ranges [1,3) and [0,4).",
+        "result": "3 and 10",
+        "reason": "Build prefix [0,3,1,6,10]. A range [l,r) is prefix[r] - prefix[l], so the answers are 6 - 3 and 10 - 0.",
+        "method": "BeginnerArrays.prefixSums and rangeSum",
+        "cost": "O(n) build and O(1) per query.",
+        "check": "Compare against a loop for all ranges, including [2,2) and [0,4)."
+      },
+      {
+        "title": "Choose compatible activities",
+        "task": "Given [0,3), [1,2), [2,4), and [4,5), choose the maximum number of non-overlapping intervals.",
+        "result": "3 activities",
+        "reason": "Sort by ending time. Choose [1,2), then [2,4), then [4,5). Choosing [0,3) first would leave less room.",
+        "method": "BeginnerGreedy.maxNonOverlapping",
+        "cost": "O(n log n) for sorting.",
+        "check": "Enumerate all subsets for four intervals and confirm no larger compatible set exists."
+      },
+      {
+        "title": "Count rooms in a grid",
+        "task": "Treat # as open in the three rows #.#, #.., and .##. Count four-neighbor connected regions.",
+        "result": "3 regions",
+        "reason": "Start a BFS at each unseen open cell. The top-left pair is one region, the top-right cell another, and the bottom-right pair a third.",
+        "method": "BeginnerGraphs.gridComponents",
+        "cost": "O(rows * columns), because each cell is visited at most once.",
+        "check": "Replace the center wall with an open cell and recount the connected regions."
+      },
+      {
+        "title": "Find the minimum number of coins",
+        "task": "With unlimited coins of values 1, 3, and 4, form amount 6 using as few coins as possible.",
+        "result": "2 coins",
+        "reason": "Let dp[x] be the best answer for amount x. For each coin c <= x, try dp[x-c] + 1. The best choice is 3 + 3.",
+        "method": "BeginnerDynamicProgramming.minimumCoins",
+        "cost": "O(amount * number of coin types).",
+        "check": "Try amount 0, an unreachable amount without coin 1, and a greedy counterexample such as amount 6."
+      }
+    ],
+    "intermediate": [
+      {
+        "title": "Maintain merging teams",
+        "task": "Start with vertices 0 through 3. Merge (0,1), (2,3), then (1,2). Ask whether 0 and 3 are connected.",
+        "result": "Yes",
+        "reason": "Each union joins two representative components. After the third union, all four vertices share one representative.",
+        "method": "DataStructures.DSU",
+        "cost": "Almost constant amortized time per operation.",
+        "check": "Compare every connectivity query with BFS on the edges inserted so far."
+      },
+      {
+        "title": "Use weighted shortest paths",
+        "task": "Directed edges are 0 to 1 with weight 4, 0 to 2 with weight 1, and 2 to 1 with weight 1. Find the distance from 0 to 1.",
+        "result": "2",
+        "reason": "The direct path costs 4. The route through vertex 2 costs 1 + 1. All weights are nonnegative, so Dijkstra applies.",
+        "method": "Graphs.dijkstra",
+        "cost": "O((V+E) log V) with a priority queue.",
+        "check": "Add a disconnected vertex and confirm it retains the unreachable sentinel."
+      },
+      {
+        "title": "Choose items once",
+        "task": "Weights are [2,3,4], values are [4,5,6], and capacity is 5. Maximize total value with each item used at most once.",
+        "result": "9",
+        "reason": "Choose the first two items for weight 5 and value 9. Update capacity downward so the current item cannot be reused.",
+        "method": "DynamicProgramming.knapsack",
+        "cost": "O(items * capacity).",
+        "check": "Enumerate all eight subsets and compare their feasible values."
+      }
+    ],
+    "advanced": [
+      {
+        "title": "Translate clauses into implications",
+        "task": "Find values of a and b satisfying (a or b), (not a or b), and (not b or a).",
+        "result": "a = true and b = true is a solution",
+        "reason": "For each clause x or y, add not x to y and not y to x. Solve the implication graph by SCC and reject if a variable meets its negation.",
+        "method": "TwoSat",
+        "cost": "O(variables + clauses).",
+        "check": "Enumerate all four assignments to confirm the returned solution satisfies every clause."
+      },
+      {
+        "title": "Multiply two polynomials",
+        "task": "Multiply coefficient arrays [1,2] and [3,4] modulo 998244353.",
+        "result": "[3,10,8]",
+        "reason": "The coefficients come from convolution: 1*3, then 1*4 + 2*3, then 2*4. NTT makes the same operation efficient for long arrays.",
+        "method": "Convolution",
+        "cost": "O(n log n) for a padded transform of length n.",
+        "check": "Compare random short arrays against nested-loop multiplication."
+      },
+      {
+        "title": "Route flow at minimum cost",
+        "task": "Send two units from 0 to 3. Edges 0-1 and 1-3 have cost 1 and capacity 1; edges 0-2 and 2-3 have costs 2 and 1 with capacity 1.",
+        "result": "Flow 2 with total cost 5",
+        "reason": "One unit takes 0-1-3 at cost 2. The other takes 0-2-3 at cost 3. Residual reverse edges allow later augmentations to revise a choice.",
+        "method": "MinCostFlow",
+        "cost": "Depends on the number of augmenting paths and shortest-path work.",
+        "check": "Verify delivered flow, capacity limits, and the sum of used edge costs."
+      }
+    ]
+  }
 }

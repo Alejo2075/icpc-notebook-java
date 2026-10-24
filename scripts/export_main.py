@@ -9,6 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE = ROOT / "src/template/Main.java"
 MARKER = "        // Solve the problem here. Read with in.nextInt(), write with out.println()."
+PROFILE_ALIASES = {"full": "advanced", "contest": "intermediate"}
 
 
 def catalog_entries():
@@ -78,14 +79,15 @@ def export_main(selected, output, solution=None):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--profile", choices=("full", "contest"), default="contest")
+    parser.add_argument("--profile", choices=("beginner", "intermediate", "advanced", "full", "contest"), default="intermediate")
     parser.add_argument("--include", help="Comma-separated notebook IDs; overrides profile")
     parser.add_argument("--solution", type=Path, help="Java statements inserted inside main()")
     parser.add_argument("--output", type=Path, default=ROOT / "build/Main.java")
     args = parser.parse_args()
     entries = catalog_entries()
+    profile = PROFILE_ALIASES.get(args.profile, args.profile)
     ids = args.include.split(",") if args.include else [
-        entry_id for entry_id, entry in entries.items() if args.profile in entry["profiles"]
+        entry_id for entry_id, entry in entries.items() if profile in entry["profiles"]
     ]
     result = export_main(ids, args.output, args.solution)
     print(f"Generated {args.output} with {len(result)} library entries")

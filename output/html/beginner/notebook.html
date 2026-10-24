@@ -1,0 +1,1210 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ICPC Notebook Java - Beginner</title>
+<style>
+:root{color-scheme:light;--ink:#17253c;--muted:#536276;--accent:#c85e32;--wash:#f1f5f8;--paper:#fff;--code:#f7f9fb}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--accent)}header{padding:3rem 1rem 2rem;text-align:center;background:linear-gradient(140deg,#f1f5f8,#fff 60%);border-bottom:3px solid var(--accent)}header img{width:min(560px,90vw);height:auto}h1{margin:.8rem 0 .2rem;font-size:clamp(2rem,5vw,3.1rem)}.subtitle,.muted{color:var(--muted)}main{max-width:1100px;margin:auto;padding:1rem 1.3rem 5rem}.toolbar{position:sticky;top:0;z-index:2;background:#ffffffed;padding:.8rem 0;border-bottom:1px solid #d9e0e7;backdrop-filter:blur(8px)}input[type=search]{width:min(100%,38rem);padding:.75rem 1rem;border:1px solid #bbc5d0;border-radius:.5rem;font:inherit}nav{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}nav a{padding:.25rem .55rem;background:var(--wash);border-radius:.35rem;text-decoration:none;font-size:.9rem}.panel,.metadata{background:var(--wash);border-radius:.6rem;padding:1rem 1.2rem;margin:1rem 0}.goals{padding-left:1.3rem}.entry{border-top:1px solid #d9e0e7;padding:1.3rem 0;scroll-margin-top:6rem}.entry h3{margin:.2rem 0 .6rem}.metadata{display:grid;grid-template-columns:max-content 1fr;gap:.15rem .8rem;font-size:.95rem}.metadata strong{color:var(--accent)}.study{margin:.8rem 0}.study p{margin:.35rem 0}.problem{padding:1rem 0;border-top:1px solid #d9e0e7}.problem strong{color:var(--accent)}details{margin-top:.8rem}summary{cursor:pointer;color:var(--accent);font-weight:650}pre{overflow:auto;padding:1rem;background:var(--code);border:1px solid #e0e6ec;border-radius:.5rem;font:13px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace;tab-size:4}.keyword{color:#173b75;font-weight:700}.comment{color:#64748b;font-style:italic}.string{color:#a54420}.number{color:#7251a3}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.badge{display:inline-block;padding:.12rem .5rem;background:#e8edf2;border-radius:99px;font-size:.8rem;color:var(--muted)}@media(max-width:650px){main{padding:1rem}.metadata{grid-template-columns:1fr}.metadata strong{margin-top:.3rem}}
+</style></head><body>
+<header><img src="logo.png" alt="ICPC Notebook Java team reference logo"><h1>ICPC Notebook Java</h1>
+<div class="subtitle">A progressive team reference for Java 17</div><p><span class="badge">Beginner</span> <span class="badge">11 entries</span></p></header><main>
+<div class="toolbar"><label for="search"><strong>Search this reference</strong></label><br><input id="search" type="search" placeholder="Search topics, methods, examples, and code" autocomplete="off"></div>
+<section class="panel"><h2>Learning path</h2><p><strong>Audience:</strong> Teams learning to turn a problem statement into loops, data structures, and a correct first solution.</p><p><strong>Prerequisites:</strong> Java variables, methods, arrays, loops, conditionals, and basic input/output.</p><p><strong>Practice:</strong> For each pattern, solve one small problem directly, test empty and boundary inputs, then explain the invariant in one sentence.</p><h3>Learning goals</h3><ul class="goals">
+<li>Read constraints and estimate whether O(n), O(n log n), or O(n^2) fits.</li>
+<li>Implement and test simple loops, prefix sums, sorting, and direct search.</li>
+<li>Recognize a correct greedy choice and the four parts of a dynamic program.</li>
+<li>Represent a graph and use BFS for unweighted distances.</li>
+</ul></section><h2>Problem-solving foundations</h2>
+<article class="panel searchable"><h3>Read constraints before coding</h3><p>A solution is useful only when it fits the input size. One loop over n items is O(n); nested loops over every pair are O(n^2). Sorting is usually O(n log n). Exponential subset enumeration becomes expensive quickly.</p><p><strong>Example:</strong> At n = 2,000, trying roughly four million pairs may be reasonable; at n = 200,000, forty billion pairs are not. Check the actual time limit and Java overhead.</p><p><strong>Try it:</strong> For each problem, write n and a rough operation count next to the proposed approach.</p></article>
+<article class="panel searchable"><h3>Move from a baseline to a faster method</h3><p>First state a simple correct method. Identify repeated work, then reuse it with a prefix array, sorted order, a map, or a maintained state. Keep the baseline as a test oracle for tiny cases.</p><p><strong>Example:</strong> Summing each query interval with a loop costs O(length). Building prefix sums once costs O(n), then each interval needs one subtraction.</p><p><strong>Try it:</strong> Implement both methods and compare every interval on a short random array.</p></article>
+<article class="panel searchable"><h3>State the invariant</h3><p>An invariant describes what remains true after each loop step. It helps prove that a scan, binary search, queue, or greedy choice is correct.</p><p><strong>Example:</strong> During BFS, every queued vertex has a known shortest distance, and vertices leave the queue in nondecreasing distance.</p><p><strong>Try it:</strong> Explain why the first discovered path to a vertex has the fewest edges.</p></article>
+<article class="panel searchable"><h3>Check boundaries systematically</h3><p>Test the smallest legal size, empty containers when permitted, duplicate values, negative values, and the largest numeric result. Keep zero-based indices and half-open ranges explicit.</p><p><strong>Example:</strong> For prefix sums of three values, prefix has four entries; the whole array is [0,3), and an empty range is [2,2).</p><p><strong>Try it:</strong> Write tests for an empty array, one value, and a range ending at n.</p></article>
+<h2>Guided problems</h2>
+<article class="problem searchable"><h3>Answer many range sums</h3>
+<p><strong>Task:</strong> Given values [3, -2, 5, 4], answer sums for half-open ranges [1,3) and [0,4).</p>
+<p><strong>Result:</strong> 3 and 10</p>
+<p><strong>Reasoning:</strong> Build prefix [0,3,1,6,10]. A range [l,r) is prefix[r] - prefix[l], so the answers are 6 - 3 and 10 - 0.</p>
+<p><strong>Use:</strong> BeginnerArrays.prefixSums and rangeSum</p>
+<p><strong>Cost:</strong> O(n) build and O(1) per query.</p>
+<p><strong>Check:</strong> Compare against a loop for all ranges, including [2,2) and [0,4).</p>
+</article>
+<article class="problem searchable"><h3>Choose compatible activities</h3>
+<p><strong>Task:</strong> Given [0,3), [1,2), [2,4), and [4,5), choose the maximum number of non-overlapping intervals.</p>
+<p><strong>Result:</strong> 3 activities</p>
+<p><strong>Reasoning:</strong> Sort by ending time. Choose [1,2), then [2,4), then [4,5). Choosing [0,3) first would leave less room.</p>
+<p><strong>Use:</strong> BeginnerGreedy.maxNonOverlapping</p>
+<p><strong>Cost:</strong> O(n log n) for sorting.</p>
+<p><strong>Check:</strong> Enumerate all subsets for four intervals and confirm no larger compatible set exists.</p>
+</article>
+<article class="problem searchable"><h3>Count rooms in a grid</h3>
+<p><strong>Task:</strong> Treat # as open in the three rows #.#, #.., and .##. Count four-neighbor connected regions.</p>
+<p><strong>Result:</strong> 3 regions</p>
+<p><strong>Reasoning:</strong> Start a BFS at each unseen open cell. The top-left pair is one region, the top-right cell another, and the bottom-right pair a third.</p>
+<p><strong>Use:</strong> BeginnerGraphs.gridComponents</p>
+<p><strong>Cost:</strong> O(rows * columns), because each cell is visited at most once.</p>
+<p><strong>Check:</strong> Replace the center wall with an open cell and recount the connected regions.</p>
+</article>
+<article class="problem searchable"><h3>Find the minimum number of coins</h3>
+<p><strong>Task:</strong> With unlimited coins of values 1, 3, and 4, form amount 6 using as few coins as possible.</p>
+<p><strong>Result:</strong> 2 coins</p>
+<p><strong>Reasoning:</strong> Let dp[x] be the best answer for amount x. For each coin c &lt;= x, try dp[x-c] + 1. The best choice is 3 + 3.</p>
+<p><strong>Use:</strong> BeginnerDynamicProgramming.minimumCoins</p>
+<p><strong>Cost:</strong> O(amount * number of coin types).</p>
+<p><strong>Check:</strong> Try amount 0, an unreachable amount without coin 1, and a greedy counterexample such as amount 6.</p>
+</article>
+<h2>Quick reference</h2><div class="panel"><ul>
+<li><strong>Small sequence, simple condition:</strong> Direct scan or brute force <span class="muted">(O(n) or O(n^2))</span></li>
+<li><strong>Frequency or membership lookup:</strong> HashMap or HashSet <span class="muted">(Expected O(1) per operation)</span></li>
+<li><strong>All subsets of a small set:</strong> Backtracking <span class="muted">(O(2^n))</span></li>
+<li><strong>Static interval sums:</strong> Prefix sums <span class="muted">(O(n) build, O(1) query)</span></li>
+<li><strong>Unweighted graph or grid:</strong> Breadth-first search <span class="muted">(O(V+E))</span></li>
+</ul></div><h2>Algorithm chapters</h2><nav aria-label="Chapter index">
+<a href="#contest-setup">Contest setup</a>
+<a href="#fundamentals">Fundamentals</a>
+<a href="#dynamic-programming">Dynamic programming</a>
+<a href="#graphs">Graphs</a>
+<a href="#strings">Strings</a>
+<a href="#number-theory-and-combinatorics">Number theory and combinatorics</a>
+</nav>
+<section id="contest-setup"><h2>Contest setup</h2><p class="muted">Start with a compilable single-file submission and fast input.</p>
+<article class="entry searchable" id="entry-template" data-search="standalone main template start a java judge submission. linear in the input size. use the exporter to include required helper classes. {&quot;idea&quot;: &quot;start from a working input/output skeleton so effort stays on the algorithm.&quot;, &quot;example&quot;: &quot;read two integers, add them, and print one line.&quot;, &quot;practice&quot;: &quot;compile the template before inserting helper classes.&quot;} import java.io.*;
+import java.util.*;
+
+/** standalone template for judges that require a single main.java file. */
+public class main {
+    static final class fastscanner {
+        private final inputstream in = new bufferedinputstream(system.in);
+        private final byte[] buffer = new byte[1 &lt;&lt; 16];
+        private int pos, len;
+
+        private int read() throws ioexception {
+            if (pos &gt;= len) {
+                len = in.read(buffer);
+                pos = 0;
+                if (len &lt; 0) return -1;
+            }
+            return buffer[pos++] &amp; 0xff;
+        }
+
+        string next() throws ioexception {
+            int c;
+            do { c = read(); } while (c &gt;= 0 &amp;&amp; c &lt;= &#x27; &#x27;);
+            if (c &lt; 0) return null;
+            stringbuilder token = new stringbuilder();
+            while (c &gt; &#x27; &#x27;) { token.append((char) c); c = read(); }
+            return token.tostring();
+        }
+
+        int nextint() throws ioexception { return integer.parseint(next()); }
+        long nextlong() throws ioexception { return long.parselong(next()); }
+    }
+
+    public static void main(string[] args) throws exception {
+        fastscanner in = new fastscanner();
+        printwriter out = new printwriter(new bufferedwriter(new outputstreamwriter(system.out)));
+        // solve the problem here. read with in.nextint(), write with out.println().
+        out.flush();
+    }
+}
+"><h3>Standalone Main template <span class="badge">Beginner</span></h3><p>Start a Java judge submission.</p>
+<div class="metadata"><strong>Complexity</strong><span>Linear in the input size.</span><strong>Caution</strong><span>Use the exporter to include required helper classes.</span>
+</div>
+<div class="study"><p><strong>Core idea:</strong> Start from a working input/output skeleton so effort stays on the algorithm.</p><p><strong>Worked example:</strong> Read two integers, add them, and print one line.</p><p><strong>Practice:</strong> Compile the template before inserting helper classes.</p></div>
+<details><summary>Show Java source</summary><pre><code><span class="keyword">import</span> java.io.*;
+<span class="keyword">import</span> java.util.*;
+
+<span class="comment">/** Standalone template for judges that require a single Main.java file. */</span>
+<span class="keyword">public</span> <span class="keyword">class</span> Main {
+    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">class</span> FastScanner {
+        <span class="keyword">private</span> <span class="keyword">final</span> InputStream in = <span class="keyword">new</span> BufferedInputStream(System.in);
+        <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">byte</span>[] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1</span> &lt;&lt; <span class="number">16</span>];
+        <span class="keyword">private</span> <span class="keyword">int</span> pos, len;
+
+        <span class="keyword">private</span> <span class="keyword">int</span> read() <span class="keyword">throws</span> IOException {
+            <span class="keyword">if</span> (pos &gt;= len) {
+                len = in.read(buffer);
+                pos = <span class="number">0</span>;
+                <span class="keyword">if</span> (len &lt; <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;
+            }
+            <span class="keyword">return</span> buffer[pos++] &amp; 0xff;
+        }
+
+        String next() <span class="keyword">throws</span> IOException {
+            <span class="keyword">int</span> c;
+            <span class="keyword">do</span> { c = read(); } <span class="keyword">while</span> (c &gt;= <span class="number">0</span> &amp;&amp; c &lt;= <span class="string">&#x27; &#x27;</span>);
+            <span class="keyword">if</span> (c &lt; <span class="number">0</span>) <span class="keyword">return</span> null;
+            StringBuilder token = <span class="keyword">new</span> StringBuilder();
+            <span class="keyword">while</span> (c &gt; <span class="string">&#x27; &#x27;</span>) { token.append((<span class="keyword">char</span>) c); c = read(); }
+            <span class="keyword">return</span> token.toString();
+        }
+
+        <span class="keyword">int</span> nextInt() <span class="keyword">throws</span> IOException { <span class="keyword">return</span> Integer.parseInt(next()); }
+        <span class="keyword">long</span> nextLong() <span class="keyword">throws</span> IOException { <span class="keyword">return</span> Long.parseLong(next()); }
+    }
+
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) <span class="keyword">throws</span> Exception {
+        FastScanner in = <span class="keyword">new</span> FastScanner();
+        PrintWriter out = <span class="keyword">new</span> PrintWriter(<span class="keyword">new</span> BufferedWriter(<span class="keyword">new</span> OutputStreamWriter(System.out)));
+        <span class="comment">// Solve the problem here. Read with in.nextInt(), write with out.println().</span>
+        out.flush();
+    }
+}
+</code></pre></details></article>
+<article class="entry searchable" id="entry-io" data-search="reusable fast input read large ascii-token input. linear time; fixed-size buffer. not a unicode decoder. {&quot;idea&quot;: &quot;buffered token input reduces per-character overhead on large files.&quot;, &quot;example&quot;: &quot;read n, then process exactly n integers with nextint().&quot;, &quot;practice&quot;: &quot;test eof, negative values, and the final token without a newline.&quot;} package notebook;
+
+import java.io.bufferedinputstream;
+import java.io.ioexception;
+import java.io.inputstream;
+
+/** fast byte input for ascii contest tokens. use printwriter/stringbuilder for output. */
+public final class contestio {
+    private final inputstream in;
+    private final byte[] buffer = new byte[1 &lt;&lt; 16];
+    private int pos, len;
+
+    public contestio(inputstream input) { in = new bufferedinputstream(input); }
+
+    private int read() throws ioexception {
+        if (pos &gt;= len) {
+            len = in.read(buffer);
+            pos = 0;
+            if (len &lt; 0) return -1;
+        }
+        return buffer[pos++] &amp; 0xff;
+    }
+
+    /** returns null at eof. tokens are decoded as ascii. */
+    public string next() throws ioexception {
+        int c;
+        do { c = read(); } while (c &gt;= 0 &amp;&amp; c &lt;= &#x27; &#x27;);
+        if (c &lt; 0) return null;
+        stringbuilder token = new stringbuilder();
+        while (c &gt; &#x27; &#x27;) { token.append((char) c); c = read(); }
+        return token.tostring();
+    }
+
+    public int nextint() throws ioexception { return integer.parseint(next()); }
+    public long nextlong() throws ioexception { return long.parselong(next()); }
+}
+"><h3>Reusable fast input <span class="badge">Beginner</span></h3><p>Read large ASCII-token input.</p>
+<div class="metadata"><strong>Complexity</strong><span>Linear time; fixed-size buffer.</span><strong>Caution</strong><span>Not a Unicode decoder.</span>
+</div>
+<div class="study"><p><strong>Core idea:</strong> Buffered token input reduces per-character overhead on large files.</p><p><strong>Worked example:</strong> Read n, then process exactly n integers with nextInt().</p><p><strong>Practice:</strong> Test EOF, negative values, and the final token without a newline.</p></div>
+<details><summary>Show Java source</summary><pre><code><span class="keyword">package</span> notebook;
+
+<span class="keyword">import</span> java.io.BufferedInputStream;
+<span class="keyword">import</span> java.io.IOException;
+<span class="keyword">import</span> java.io.InputStream;
+
+<span class="comment">/** Fast byte input for ASCII contest tokens. Use PrintWriter/StringBuilder for output. */</span>
+<span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> ContestIO {
+    <span class="keyword">private</span> <span class="keyword">final</span> InputStream in;
+    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">byte</span>[] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1</span> &lt;&lt; <span class="number">16</span>];
+    <span class="keyword">private</span> <span class="keyword">int</span> pos, len;
+
+    <span class="keyword">public</span> ContestIO(InputStream input) { in = <span class="keyword">new</span> BufferedInputStream(input); }
+
+    <span class="keyword">private</span> <span class="keyword">int</span> read() <span class="keyword">throws</span> IOException {
+        <span class="keyword">if</span> (pos &gt;= len) {
+            len = in.read(buffer);
+            pos = <span class="number">0</span>;
+            <span class="keyword">if</span> (len &lt; <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;
+        }
+        <span class="keyword">return</span> buffer[pos++] &amp; 0xff;
+    }
+
+    <span class="comment">/** Returns null at EOF. Tokens are decoded as ASCII. */</span>
+    <span class="keyword">public</span> String next() <span class="keyword">throws</span> IOException {
+        <span class="keyword">int</span> c;
+        <span class="keyword">do</span> { c = read(); } <span class="keyword">while</span> (c &gt;= <span class="number">0</span> &amp;&amp; c &lt;= <span class="string">&#x27; &#x27;</span>);
+        <span class="keyword">if</span> (c &lt; <span class="number">0</span>) <span class="keyword">return</span> null;
+        StringBuilder token = <span class="keyword">new</span> StringBuilder();
+        <span class="keyword">while</span> (c &gt; <span class="string">&#x27; &#x27;</span>) { token.append((<span class="keyword">char</span>) c); c = read(); }
+        <span class="keyword">return</span> token.toString();
+    }
+
+    <span class="keyword">public</span> <span class="keyword">int</span> nextInt() <span class="keyword">throws</span> IOException { <span class="keyword">return</span> Integer.parseInt(next()); }
+    <span class="keyword">public</span> <span class="keyword">long</span> nextLong() <span class="keyword">throws</span> IOException { <span class="keyword">return</span> Long.parseLong(next()); }
+}
+</code></pre></details></article>
+</section>
+<section id="fundamentals"><h2>Fundamentals</h2><p class="muted">Arrays, windows, sorting, and binary search come first.</p>
+<article class="entry searchable" id="entry-arrays-intro" data-search="loops, arrays, prefix sums, and brute force process a sequence or test all small pairs. o(n) scans; o(n^2) pair search. a prefix array has length n+1 and answers half-open ranges. {&quot;idea&quot;: &quot;a direct scan is often the clearest baseline. prefix sums store the total before each index so one subtraction answers a range.&quot;, &quot;example&quot;: &quot;for [3, -2, 5], prefix = [0, 3, 1, 6] and sum [1, 3) = 6 - 3 = 3.&quot;, &quot;practice&quot;: &quot;compare every range sum against a loop on small random arrays.&quot;} package notebook;
+
+import java.util.arrays;
+
+/** small array patterns that are useful before learning advanced data structures. */
+public final class beginnerarrays {
+    private beginnerarrays() {}
+
+    /** sum all values. o(n) time, o(1) extra space; throws if the sum exceeds long. */
+    public static long sum(int[] values) {
+        long result = 0;
+        for (int value : values) result = math.addexact(result, value);
+        return result;
+    }
+
+    /** return the index of the first target, or -1. o(n) time, o(1) space. */
+    public static int linearsearch(int[] values, int target) {
+        for (int i = 0; i &lt; values.length; i++) if (values[i] == target) return i;
+        return -1;
+    }
+
+    /** count occurrences of a target. o(n) time, o(1) space. */
+    public static int count(int[] values, int target) {
+        int result = 0;
+        for (int value : values) if (value == target) result++;
+        return result;
+    }
+
+    /** reverse an array in place. o(n) time, o(1) extra space. */
+    public static void reverse(int[] values) {
+        for (int left = 0, right = values.length - 1; left &lt; right; left++, right--) {
+            int temp = values[left]; values[left] = values[right]; values[right] = temp;
+        }
+    }
+
+    /** inclusive prefix sums with prefix[0] = 0. o(n) time and space. */
+    public static long[] prefixsums(int[] values) {
+        long[] prefix = new long[values.length + 1];
+        for (int i = 0; i &lt; values.length; i++) prefix[i + 1] = math.addexact(prefix[i], values[i]);
+        return prefix;
+    }
+
+    /** sum [left, right) using a prefix array. o(1) time. */
+    public static long rangesum(long[] prefix, int left, int right) {
+        if (left &lt; 0 || right &lt; left || right &gt;= prefix.length) throw new indexoutofboundsexception();
+        return prefix[right] - prefix[left];
+    }
+
+    /** two-sum by trying every pair; returns indices or an empty array. o(n^2) time. */
+    public static int[] pairwithsum(int[] values, long target) {
+        for (int i = 0; i &lt; values.length; i++)
+            for (int j = i + 1; j &lt; values.length; j++)
+                if ((long) values[i] + values[j] == target) return new int[] {i, j};
+        return new int[0];
+    }
+
+    /** copy and sort values without modifying the input. o(n log n) time. */
+    public static int[] sortedcopy(int[] values) {
+        int[] result = values.clone();
+        arrays.sort(result);
+        return result;
+    }
+}
+"><h3>Loops, arrays, prefix sums, and brute force <span class="badge">Beginner</span></h3><p>Process a sequence or test all small pairs.</p>
+<div class="metadata"><strong>Complexity</strong><span>O(n) scans; O(n^2) pair search.</span><strong>Caution</strong><span>A prefix array has length n+1 and answers half-open ranges.</span>
+</div>
+<div class="study"><p><strong>Core idea:</strong> A direct scan is often the clearest baseline. Prefix sums store the total before each index so one subtraction answers a range.</p><p><strong>Worked example:</strong> For [3, -2, 5], prefix = [0, 3, 1, 6] and sum [1, 3) = 6 - 3 = 3.</p><p><strong>Practice:</strong> Compare every range sum against a loop on small random arrays.</p></div>
+<details><summary>Show Java source</summary><pre><code><span class="keyword">package</span> notebook;
+
+<span class="keyword">import</span> java.util.Arrays;
+
+<span class="comment">/** Small array patterns that are useful before learning advanced data structures. */</span>
+<span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> BeginnerArrays {
+    <span class="keyword">private</span> BeginnerArrays() {}
+
+    <span class="comment">/** Sum all values. O(n) time, O(1) extra space; throws if the sum exceeds long. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> sum(<span class="keyword">int</span>[] values) {
+        <span class="keyword">long</span> result = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> value : values) result = Math.addExact(result, value);
+        <span class="keyword">return</span> result;
+    }
+
+    <span class="comment">/** Return the index of the first target, or -1. O(n) time, O(1) space. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> linearSearch(<span class="keyword">int</span>[] values, <span class="keyword">int</span> target) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; values.length; i++) <span class="keyword">if</span> (values[i] == target) <span class="keyword">return</span> i;
+        <span class="keyword">return</span> -<span class="number">1</span>;
+    }
+
+    <span class="comment">/** Count occurrences of a target. O(n) time, O(1) space. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> count(<span class="keyword">int</span>[] values, <span class="keyword">int</span> target) {
+        <span class="keyword">int</span> result = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> value : values) <span class="keyword">if</span> (value == target) result++;
+        <span class="keyword">return</span> result;
+    }
+
+    <span class="comment">/** Reverse an array in place. O(n) time, O(1) extra space. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> reverse(<span class="keyword">int</span>[] values) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> left = <span class="number">0</span>, right = values.length - <span class="number">1</span>; left &lt; right; left++, right--) {
+            <span class="keyword">int</span> temp = values[left]; values[left] = values[right]; values[right] = temp;
+        }
+    }
+
+    <span class="comment">/** Inclusive prefix sums with prefix[0] = 0. O(n) time and space. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span>[] prefixSums(<span class="keyword">int</span>[] values) {
+        <span class="keyword">long</span>[] prefix = <span class="keyword">new</span> <span class="keyword">long</span>[values.length + <span class="number">1</span>];
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; values.length; i++) prefix[i + <span class="number">1</span>] = Math.addExact(prefix[i], values[i]);
+        <span class="keyword">return</span> prefix;
+    }
+
+    <span class="comment">/** Sum [left, right) using a prefix array. O(1) time. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> rangeSum(<span class="keyword">long</span>[] prefix, <span class="keyword">int</span> left, <span class="keyword">int</span> right) {
+        <span class="keyword">if</span> (left &lt; <span class="number">0</span> || right &lt; left || right &gt;= prefix.length) <span class="keyword">throw</span> <span class="keyword">new</span> IndexOutOfBoundsException();
+        <span class="keyword">return</span> prefix[right] - prefix[left];
+    }
+
+    <span class="comment">/** Two-sum by trying every pair; returns indices or an empty array. O(n^2) time. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] pairWithSum(<span class="keyword">int</span>[] values, <span class="keyword">long</span> target) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; values.length; i++)
+            <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; values.length; j++)
+                <span class="keyword">if</span> ((<span class="keyword">long</span>) values[i] + values[j] == target) <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[] {i, j};
+        <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">0</span>];
+    }
+
+    <span class="comment">/** Copy and sort values without modifying the input. O(n log n) time. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] sortedCopy(<span class="keyword">int</span>[] values) {
+        <span class="keyword">int</span>[] result = values.clone();
+        Arrays.sort(result);
+        <span class="keyword">return</span> result;
+    }
+}
+</code></pre></details></article>
+<article class="entry searchable" id="entry-collections-intro" data-search="maps, sets, and stacks count frequencies, remove duplicates, or check nested delimiters. expected o(n) time for hash collections; o(n) stack space. hashmap and hashset have no guaranteed iteration order. {&quot;idea&quot;: &quot;a map stores a value for each key, a set stores membership, and a stack reverses the order in which items are processed.&quot;, &quot;example&quot;: &quot;for [4,2,4], the frequency map stores 4 to 2 and 2 to 1. the string ([{}]) is balanced.&quot;, &quot;practice&quot;: &quot;solve a frequency-count problem with both a map and a sorted array, then compare the tradeoffs.&quot;} package notebook;
+
+import java.util.arraydeque;
+import java.util.hashmap;
+import java.util.hashset;
+import java.util.map;
+import java.util.set;
+
+/** everyday java collections: map, set, and stack. */
+public final class beginnercollections {
+    private beginnercollections() {}
+
+    /** count each integer with a hash map. expected o(n) time and o(distinct) space. */
+    public static map&lt;integer, integer&gt; frequencies(int[] values) {
+        map&lt;integer, integer&gt; result = new hashmap&lt;&gt;();
+        for (int value : values) result.merge(value, 1, integer::sum);
+        return result;
+    }
+
+    /** count distinct integers with a hash set. expected o(n) time and space. */
+    public static int distinctcount(int[] values) {
+        set&lt;integer&gt; seen = new hashset&lt;&gt;();
+        for (int value : values) seen.add(value);
+        return seen.size();
+    }
+
+    /** check balanced (), [], and {} brackets. o(n) time, o(n) stack space. */
+    public static boolean balancedbrackets(string text) {
+        arraydeque&lt;character&gt; stack = new arraydeque&lt;&gt;();
+        for (int i = 0; i &lt; text.length(); i++) {
+            char ch = text.charat(i);
+            if (ch == &#x27;(&#x27; || ch == &#x27;[&#x27; || ch == &#x27;{&#x27;) stack.push(ch);
+            else if (ch == &#x27;)&#x27; || ch == &#x27;]&#x27; || ch == &#x27;}&#x27;) {
+                if (stack.isempty()) return false;
+                char open = stack.pop();
+                if (ch == &#x27;)&#x27; &amp;&amp; open != &#x27;(&#x27; || ch == &#x27;]&#x27; &amp;&amp; open != &#x27;[&#x27; || ch == &#x27;}&#x27; &amp;&amp; open != &#x27;{&#x27;)
+                    return false;
+            } else throw new illegalargumentexception(&quot;expected brackets only&quot;);
+        }
+        return stack.isempty();
+    }
+}
+"><h3>Maps, sets, and stacks <span class="badge">Beginner</span></h3><p>Count frequencies, remove duplicates, or check nested delimiters.</p>
+<div class="metadata"><strong>Complexity</strong><span>Expected O(n) time for hash collections; O(n) stack space.</span><strong>Caution</strong><span>HashMap and HashSet have no guaranteed iteration order.</span>
+</div>
+<div class="study"><p><strong>Core idea:</strong> A map stores a value for each key, a set stores membership, and a stack reverses the order in which items are processed.</p><p><strong>Worked example:</strong> For [4,2,4], the frequency map stores 4 to 2 and 2 to 1. The string ([{}]) is balanced.</p><p><strong>Practice:</strong> Solve a frequency-count problem with both a map and a sorted array, then compare the tradeoffs.</p></div>
+<details><summary>Show Java source</summary><pre><code><span class="keyword">package</span> notebook;
+
+<span class="keyword">import</span> java.util.ArrayDeque;
+<span class="keyword">import</span> java.util.HashMap;
+<span class="keyword">import</span> java.util.HashSet;
+<span class="keyword">import</span> java.util.Map;
+<span class="keyword">import</span> java.util.Set;
+
+<span class="comment">/** Everyday Java collections: map, set, and stack. */</span>
+<span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> BeginnerCollections {
+    <span class="keyword">private</span> BeginnerCollections() {}
+
+    <span class="comment">/** Count each integer with a hash map. Expected O(n) time and O(distinct) space. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> Map&lt;Integer, Integer&gt; frequencies(<span class="keyword">int</span>[] values) {
+        Map&lt;Integer, Integer&gt; result = <span class="keyword">new</span> HashMap&lt;&gt;();
+        <span class="keyword">for</span> (<span class="keyword">int</span> value : values) result.merge(value, <span class="number">1</span>, Integer::sum);
+        <span class="keyword">return</span> result;
+    }
+
+    <span class="comment">/** Count distinct integers with a hash set. Expected O(n) time and space. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> distinctCount(<span class="keyword">int</span>[] values) {
+        Set&lt;Integer&gt; seen = <span class="keyword">new</span> HashSet&lt;&gt;();
+        <span class="keyword">for</span> (<span class="keyword">int</span> value : values) seen.add(value);
+        <span class="keyword">return</span> seen.size();
+    }
+
+    <span class="comment">/** Check balanced (), [], and {} brackets. O(n) time, O(n) stack space. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> balancedBrackets(String text) {
+        ArrayDeque&lt;Character&gt; stack = <span class="keyword">new</span> ArrayDeque&lt;&gt;();
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; text.length(); i++) {
+            <span class="keyword">char</span> ch = text.charAt(i);
+            <span class="keyword">if</span> (ch == <span class="string">&#x27;(&#x27;</span> || ch == <span class="string">&#x27;[&#x27;</span> || ch == <span class="string">&#x27;{&#x27;</span>) stack.push(ch);
+            <span class="keyword">else</span> <span class="keyword">if</span> (ch == <span class="string">&#x27;)&#x27;</span> || ch == <span class="string">&#x27;]&#x27;</span> || ch == <span class="string">&#x27;}&#x27;</span>) {
+                <span class="keyword">if</span> (stack.isEmpty()) <span class="keyword">return</span> false;
+                <span class="keyword">char</span> open = stack.pop();
+                <span class="keyword">if</span> (ch == <span class="string">&#x27;)&#x27;</span> &amp;&amp; open != <span class="string">&#x27;(&#x27;</span> || ch == <span class="string">&#x27;]&#x27;</span> &amp;&amp; open != <span class="string">&#x27;[&#x27;</span> || ch == <span class="string">&#x27;}&#x27;</span> &amp;&amp; open != <span class="string">&#x27;{&#x27;</span>)
+                    <span class="keyword">return</span> false;
+            } <span class="keyword">else</span> <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;expected brackets only&quot;</span>);
+        }
+        <span class="keyword">return</span> stack.isEmpty();
+    }
+}
+</code></pre></details></article>
+<article class="entry searchable" id="entry-backtracking-intro" data-search="recursion and exhaustive subsets enumerate all choices when n is small. o(n) factorial; o(2^n) subset search. exponential search is only practical for small n; recursion uses stack space. {&quot;idea&quot;: &quot;a recursive function solves a smaller instance, reaches a base case, then combines answers. for each subset element, branch into skip and take.&quot;, &quot;example&quot;: &quot;for [1,2,3] and target 3, subsets [3] and [1,2] both match.&quot;, &quot;practice&quot;: &quot;draw the recursion tree for three values and mark its base cases.&quot;} package notebook;
+
+/** recursion and exhaustive search when the input is small enough. */
+public final class beginnerbacktracking {
+    private beginnerbacktracking() {}
+
+    /** factorial using a smaller subproblem. o(n) time and stack; n must be in [0,20]. */
+    public static long factorial(int n) {
+        if (n &lt; 0 || n &gt; 20) throw new illegalargumentexception(&quot;n must be in [0,20]&quot;);
+        if (n &lt;= 1) return 1;
+        return n * factorial(n - 1);
+    }
+
+    /** count subsets whose sum equals target. o(2^n) time, o(n) stack; n &lt;= 25. */
+    public static long countsubsetswithsum(int[] values, long target) {
+        if (values.length &gt; 25) throw new illegalargumentexception(&quot;too many subsets&quot;);
+        return count(values, 0, 0, target);
+    }
+
+    private static long count(int[] values, int index, long sum, long target) {
+        if (index == values.length) return sum == target ? 1 : 0;
+        return count(values, index + 1, sum, target)
+                + count(values, index + 1, math.addexact(sum, values[index]), target);
+    }
+}
+"><h3>Recursion and exhaustive subsets <span class="badge">Beginner</span></h3><p>Enumerate all choices when n is small.</p>
+<div class="metadata"><strong>Complexity</strong><span>O(n) factorial; O(2^n) subset search.</span><strong>Caution</strong><span>Exponential search is only practical for small n; recursion uses stack space.</span>
+</div>
+<div class="study"><p><strong>Core idea:</strong> A recursive function solves a smaller instance, reaches a base case, then combines answers. For each subset element, branch into skip and take.</p><p><strong>Worked example:</strong> For [1,2,3] and target 3, subsets [3] and [1,2] both match.</p><p><strong>Practice:</strong> Draw the recursion tree for three values and mark its base cases.</p></div>
+<details><summary>Show Java source</summary><pre><code><span class="keyword">package</span> notebook;
+
+<span class="comment">/** Recursion and exhaustive search when the input is small enough. */</span>
+<span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> BeginnerBacktracking {
+    <span class="keyword">private</span> BeginnerBacktracking() {}
+
+    <span class="comment">/** Factorial using a smaller subproblem. O(n) time and stack; n must be in [0,20]. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> factorial(<span class="keyword">int</span> n) {
+        <span class="keyword">if</span> (n &lt; <span class="number">0</span> || n &gt; <span class="number">20</span>) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;n must be in [0,20]&quot;</span>);
+        <span class="keyword">if</span> (n &lt;= <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;
+        <span class="keyword">return</span> n * factorial(n - <span class="number">1</span>);
+    }
+
+    <span class="comment">/** Count subsets whose sum equals target. O(2^n) time, O(n) stack; n &lt;= 25. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> countSubsetsWithSum(<span class="keyword">int</span>[] values, <span class="keyword">long</span> target) {
+        <span class="keyword">if</span> (values.length &gt; <span class="number">25</span>) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;too many subsets&quot;</span>);
+        <span class="keyword">return</span> count(values, <span class="number">0</span>, <span class="number">0</span>, target);
+    }
+
+    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">long</span> count(<span class="keyword">int</span>[] values, <span class="keyword">int</span> index, <span class="keyword">long</span> sum, <span class="keyword">long</span> target) {
+        <span class="keyword">if</span> (index == values.length) <span class="keyword">return</span> sum == target ? <span class="number">1</span> : <span class="number">0</span>;
+        <span class="keyword">return</span> count(values, index + <span class="number">1</span>, sum, target)
+                + count(values, index + <span class="number">1</span>, Math.addExact(sum, values[index]), target);
+    }
+}
+</code></pre></details></article>
+<article class="entry searchable" id="entry-search" data-search="binary search and bounds search sorted data or a monotone answer predicate. o(log n) search. sorted input and monotonicity are preconditions. {&quot;idea&quot;: &quot;binary search keeps an interval that is guaranteed to contain the answer.&quot;, &quot;example&quot;: &quot;for sorted [1, 2, 2, 5], lowerbound(2) is 1 and upperbound(2) is 3.&quot;, &quot;practice&quot;: &quot;test an empty array and targets below and above every element.&quot;} package notebook;
+
+import java.util.function.longpredicate;
+
+/** search and sorting routines. input to searches must be sorted ascending. */
+public final class searchingsorting {
+    private searchingsorting() {}
+
+    /** o(log n); returns any matching index, or -1. */
+    public static int binarysearch(int[] a, int key) {
+        int lo = 0, hi = a.length - 1;
+        while (lo &lt;= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (a[mid] == key) return mid;
+            if (a[mid] &lt; key) lo = mid + 1;
+            else hi = mid - 1;
+        }
+        return -1;
+    }
+
+    /** o(log n); returns any matching index, or -1. */
+    public static int ternarysearch(int[] a, int key) {
+        int lo = 0, hi = a.length - 1;
+        while (lo &lt;= hi) {
+            int m1 = lo + (hi - lo) / 3;
+            int m2 = hi - (hi - lo) / 3;
+            if (a[m1] == key) return m1;
+            if (a[m2] == key) return m2;
+            if (key &lt; a[m1]) hi = m1 - 1;
+            else if (key &gt; a[m2]) lo = m2 + 1;
+            else { lo = m1 + 1; hi = m2 - 1; }
+        }
+        return -1;
+    }
+
+    /** o(n + 65536) counting sort for java utf-16 char units. */
+    public static void countingsort(char[] a) {
+        int[] count = new int[character.max_value + 1];
+        for (char c : a) count[c]++;
+        int i = 0;
+        for (int c = 0; c &lt; count.length; c++) {
+            while (count[c]-- &gt; 0) a[i++] = (char) c;
+        }
+    }
+
+    /** lower bound: first index i with a[i] &gt;= key. o(log n). */
+    public static int lowerbound(int[] a, int key) {
+        int lo = 0, hi = a.length;
+        while (lo &lt; hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (a[mid] &lt; key) lo = mid + 1;
+            else hi = mid;
+        }
+        return lo;
+    }
+
+    /** first index with a[i] &gt; key in a sorted array. o(log n). */
+    public static int upperbound(int[] a, int key) {
+        int lo = 0, hi = a.length;
+        while (lo &lt; hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (a[mid] &lt;= key) lo = mid + 1;
+            else hi = mid;
+        }
+        return lo;
+    }
+
+    /** first x in nonnegative [low,high] satisfying a monotone false-then-true predicate. */
+    public static long firsttrue(long low, long high, longpredicate predicate) {
+        if (low &lt; 0 || low &gt; high || !predicate.test(high)) throw new illegalargumentexception(&quot;no true value in range&quot;);
+        while (low &lt; high) {
+            long mid = low + ((high - low) &gt;&gt;&gt; 1);
+            if (predicate.test(mid)) high = mid;
+            else low = mid + 1;
+        }
+        return low;
+    }
+}
+"><h3>Binary search and bounds <span class="badge">Beginner</span></h3><p>Search sorted data or a monotone answer predicate.</p>
+<div class="metadata"><strong>Complexity</strong><span>O(log n) search.</span><strong>Caution</strong><span>Sorted input and monotonicity are preconditions.</span>
+</div>
+<div class="study"><p><strong>Core idea:</strong> Binary search keeps an interval that is guaranteed to contain the answer.</p><p><strong>Worked example:</strong> For sorted [1, 2, 2, 5], lowerBound(2) is 1 and upperBound(2) is 3.</p><p><strong>Practice:</strong> Test an empty array and targets below and above every element.</p></div>
+<details><summary>Show Java source</summary><pre><code><span class="keyword">package</span> notebook;
+
+<span class="keyword">import</span> java.util.function.LongPredicate;
+
+<span class="comment">/** Search and sorting routines. Input to searches must be sorted ascending. */</span>
+<span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> SearchingSorting {
+    <span class="keyword">private</span> SearchingSorting() {}
+
+    <span class="comment">/** O(log n); returns any matching index, or -1. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> binarySearch(<span class="keyword">int</span>[] a, <span class="keyword">int</span> key) {
+        <span class="keyword">int</span> lo = <span class="number">0</span>, hi = a.length - <span class="number">1</span>;
+        <span class="keyword">while</span> (lo &lt;= hi) {
+            <span class="keyword">int</span> mid = lo + (hi - lo) / <span class="number">2</span>;
+            <span class="keyword">if</span> (a[mid] == key) <span class="keyword">return</span> mid;
+            <span class="keyword">if</span> (a[mid] &lt; key) lo = mid + <span class="number">1</span>;
+            <span class="keyword">else</span> hi = mid - <span class="number">1</span>;
+        }
+        <span class="keyword">return</span> -<span class="number">1</span>;
+    }
+
+    <span class="comment">/** O(log n); returns any matching index, or -1. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> ternarySearch(<span class="keyword">int</span>[] a, <span class="keyword">int</span> key) {
+        <span class="keyword">int</span> lo = <span class="number">0</span>, hi = a.length - <span class="number">1</span>;
+        <span class="keyword">while</span> (lo &lt;= hi) {
+            <span class="keyword">int</span> m1 = lo + (hi - lo) / <span class="number">3</span>;
+            <span class="keyword">int</span> m2 = hi - (hi - lo) / <span class="number">3</span>;
+            <span class="keyword">if</span> (a[m1] == key) <span class="keyword">return</span> m1;
+            <span class="keyword">if</span> (a[m2] == key) <span class="keyword">return</span> m2;
+            <span class="keyword">if</span> (key &lt; a[m1]) hi = m1 - <span class="number">1</span>;
+            <span class="keyword">else</span> <span class="keyword">if</span> (key &gt; a[m2]) lo = m2 + <span class="number">1</span>;
+            <span class="keyword">else</span> { lo = m1 + <span class="number">1</span>; hi = m2 - <span class="number">1</span>; }
+        }
+        <span class="keyword">return</span> -<span class="number">1</span>;
+    }
+
+    <span class="comment">/** O(n + 65536) counting sort for Java UTF-16 char units. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> countingSort(<span class="keyword">char</span>[] a) {
+        <span class="keyword">int</span>[] count = <span class="keyword">new</span> <span class="keyword">int</span>[Character.MAX_VALUE + <span class="number">1</span>];
+        <span class="keyword">for</span> (<span class="keyword">char</span> c : a) count[c]++;
+        <span class="keyword">int</span> i = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> c = <span class="number">0</span>; c &lt; count.length; c++) {
+            <span class="keyword">while</span> (count[c]-- &gt; <span class="number">0</span>) a[i++] = (<span class="keyword">char</span>) c;
+        }
+    }
+
+    <span class="comment">/** Lower bound: first index i with a[i] &gt;= key. O(log n). */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> lowerBound(<span class="keyword">int</span>[] a, <span class="keyword">int</span> key) {
+        <span class="keyword">int</span> lo = <span class="number">0</span>, hi = a.length;
+        <span class="keyword">while</span> (lo &lt; hi) {
+            <span class="keyword">int</span> mid = lo + (hi - lo) / <span class="number">2</span>;
+            <span class="keyword">if</span> (a[mid] &lt; key) lo = mid + <span class="number">1</span>;
+            <span class="keyword">else</span> hi = mid;
+        }
+        <span class="keyword">return</span> lo;
+    }
+
+    <span class="comment">/** First index with a[i] &gt; key in a sorted array. O(log n). */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> upperBound(<span class="keyword">int</span>[] a, <span class="keyword">int</span> key) {
+        <span class="keyword">int</span> lo = <span class="number">0</span>, hi = a.length;
+        <span class="keyword">while</span> (lo &lt; hi) {
+            <span class="keyword">int</span> mid = lo + (hi - lo) / <span class="number">2</span>;
+            <span class="keyword">if</span> (a[mid] &lt;= key) lo = mid + <span class="number">1</span>;
+            <span class="keyword">else</span> hi = mid;
+        }
+        <span class="keyword">return</span> lo;
+    }
+
+    <span class="comment">/** First x in nonnegative [low,high] satisfying a monotone false-then-true predicate. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> firstTrue(<span class="keyword">long</span> low, <span class="keyword">long</span> high, LongPredicate predicate) {
+        <span class="keyword">if</span> (low &lt; <span class="number">0</span> || low &gt; high || !predicate.test(high)) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;no true value in range&quot;</span>);
+        <span class="keyword">while</span> (low &lt; high) {
+            <span class="keyword">long</span> mid = low + ((high - low) &gt;&gt;&gt; <span class="number">1</span>);
+            <span class="keyword">if</span> (predicate.test(mid)) high = mid;
+            <span class="keyword">else</span> low = mid + <span class="number">1</span>;
+        }
+        <span class="keyword">return</span> low;
+    }
+}
+</code></pre></details></article>
+<article class="entry searchable" id="entry-greedy-intro" data-search="interval scheduling and covering select compatible intervals or cover intervals with few points. o(n log n) from sorting. scheduling uses half-open intervals; point covering uses closed intervals. {&quot;idea&quot;: &quot;sort by earliest finishing time. choosing an early finish leaves as much room as possible for later intervals.&quot;, &quot;example&quot;: &quot;among [0,3), [1,2), [2,4), choose the last two.&quot;, &quot;practice&quot;: &quot;try to prove the choice by exchanging an optimal first interval with the greedy one.&quot;} package notebook;
+
+import java.util.arrays;
+import java.util.comparator;
+
+/** greedy choices with simple exchange-argument proofs. */
+public final class beginnergreedy {
+    private beginnergreedy() {}
+
+    /** maximum number of non-overlapping [start,end) intervals. o(n log n) time. */
+    public static int maxnonoverlapping(long[][] intervals) {
+        long[][] sorted = new long[intervals.length][];
+        for (int i = 0; i &lt; intervals.length; i++) {
+            if (intervals[i].length != 2 || intervals[i][0] &gt; intervals[i][1])
+                throw new illegalargumentexception(&quot;invalid interval&quot;);
+            sorted[i] = intervals[i].clone();
+        }
+        arrays.sort(sorted, comparator.comparinglong((long[] interval) -&gt; interval[1])
+                .thencomparinglong(interval -&gt; interval[0]));
+        int chosen = 0;
+        long lastend = long.min_value;
+        for (long[] interval : sorted) if (interval[0] &gt;= lastend) {
+            chosen++;
+            lastend = interval[1];
+        }
+        return chosen;
+    }
+
+    /** minimum points that cover closed intervals [left,right]. o(n log n) time. */
+    public static int pointstocover(long[][] intervals) {
+        long[][] sorted = new long[intervals.length][];
+        for (int i = 0; i &lt; intervals.length; i++) {
+            if (intervals[i].length != 2 || intervals[i][0] &gt; intervals[i][1])
+                throw new illegalargumentexception(&quot;invalid interval&quot;);
+            sorted[i] = intervals[i].clone();
+        }
+        arrays.sort(sorted, comparator.comparinglong(interval -&gt; interval[1]));
+        int count = 0;
+        long lastpoint = 0;
+        boolean haspoint = false;
+        for (long[] interval : sorted) if (!haspoint || interval[0] &gt; lastpoint) {
+            lastpoint = interval[1];
+            haspoint = true;
+            count++;
+        }
+        return count;
+    }
+}
+"><h3>Interval scheduling and covering <span class="badge">Beginner</span></h3><p>Select compatible intervals or cover intervals with few points.</p>
+<div class="metadata"><strong>Complexity</strong><span>O(n log n) from sorting.</span><strong>Caution</strong><span>Scheduling uses half-open intervals; point covering uses closed intervals.</span>
+</div>
+<div class="study"><p><strong>Core idea:</strong> Sort by earliest finishing time. Choosing an early finish leaves as much room as possible for later intervals.</p><p><strong>Worked example:</strong> Among [0,3), [1,2), [2,4), choose the last two.</p><p><strong>Practice:</strong> Try to prove the choice by exchanging an optimal first interval with the greedy one.</p></div>
+<details><summary>Show Java source</summary><pre><code><span class="keyword">package</span> notebook;
+
+<span class="keyword">import</span> java.util.Arrays;
+<span class="keyword">import</span> java.util.Comparator;
+
+<span class="comment">/** Greedy choices with simple exchange-argument proofs. */</span>
+<span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> BeginnerGreedy {
+    <span class="keyword">private</span> BeginnerGreedy() {}
+
+    <span class="comment">/** Maximum number of non-overlapping [start,end) intervals. O(n log n) time. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> maxNonOverlapping(<span class="keyword">long</span>[][] intervals) {
+        <span class="keyword">long</span>[][] sorted = <span class="keyword">new</span> <span class="keyword">long</span>[intervals.length][];
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; intervals.length; i++) {
+            <span class="keyword">if</span> (intervals[i].length != <span class="number">2</span> || intervals[i][<span class="number">0</span>] &gt; intervals[i][<span class="number">1</span>])
+                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;invalid interval&quot;</span>);
+            sorted[i] = intervals[i].clone();
+        }
+        Arrays.sort(sorted, Comparator.comparingLong((<span class="keyword">long</span>[] interval) -&gt; interval[<span class="number">1</span>])
+                .thenComparingLong(interval -&gt; interval[<span class="number">0</span>]));
+        <span class="keyword">int</span> chosen = <span class="number">0</span>;
+        <span class="keyword">long</span> lastEnd = Long.MIN_VALUE;
+        <span class="keyword">for</span> (<span class="keyword">long</span>[] interval : sorted) <span class="keyword">if</span> (interval[<span class="number">0</span>] &gt;= lastEnd) {
+            chosen++;
+            lastEnd = interval[<span class="number">1</span>];
+        }
+        <span class="keyword">return</span> chosen;
+    }
+
+    <span class="comment">/** Minimum points that cover closed intervals [left,right]. O(n log n) time. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> pointsToCover(<span class="keyword">long</span>[][] intervals) {
+        <span class="keyword">long</span>[][] sorted = <span class="keyword">new</span> <span class="keyword">long</span>[intervals.length][];
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; intervals.length; i++) {
+            <span class="keyword">if</span> (intervals[i].length != <span class="number">2</span> || intervals[i][<span class="number">0</span>] &gt; intervals[i][<span class="number">1</span>])
+                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;invalid interval&quot;</span>);
+            sorted[i] = intervals[i].clone();
+        }
+        Arrays.sort(sorted, Comparator.comparingLong(interval -&gt; interval[<span class="number">1</span>]));
+        <span class="keyword">int</span> count = <span class="number">0</span>;
+        <span class="keyword">long</span> lastPoint = <span class="number">0</span>;
+        <span class="keyword">boolean</span> hasPoint = false;
+        <span class="keyword">for</span> (<span class="keyword">long</span>[] interval : sorted) <span class="keyword">if</span> (!hasPoint || interval[<span class="number">0</span>] &gt; lastPoint) {
+            lastPoint = interval[<span class="number">1</span>];
+            hasPoint = true;
+            count++;
+        }
+        <span class="keyword">return</span> count;
+    }
+}
+</code></pre></details></article>
+</section>
+<section id="dynamic-programming"><h2>Dynamic programming</h2><p class="muted">State, transition, base case, and iteration order should be explicit.</p>
+<article class="entry searchable" id="entry-dp-intro" data-search="first dynamic programs reuse answers to smaller states for sequences, coin change, or grids. o(n), o(amount * coin types), or o(rows * columns). path counts can overflow long; coin denominations must be positive. {&quot;idea&quot;: &quot;define the state, base case, transition, and answer before writing loops. an iterative table avoids repeated recursion.&quot;, &quot;example&quot;: &quot;for coins 1, 3, 4, amount 6 needs two coins: 3 + 3.&quot;, &quot;practice&quot;: &quot;write a table by hand for a small input and compare it with the program.&quot;} package notebook;
+
+import java.util.arrays;
+
+/** first dp examples: identify a state, base case, transition, and answer. */
+public final class beginnerdynamicprogramming {
+    private beginnerdynamicprogramming() {}
+
+    /** fibonacci f(n), with f(0)=0 and f(1)=1. o(n) time; n must be at most 92. */
+    public static long fibonacci(int n) {
+        if (n &lt; 0 || n &gt; 92) throw new illegalargumentexception(&quot;n must be in [0,92]&quot;);
+        long previous = 0, current = 1;
+        for (int i = 0; i &lt; n; i++) { long next = previous + current; previous = current; current = next; }
+        return previous;
+    }
+
+    /** minimum coins for an amount, or -1 if impossible. o(amount * coins.length) time. */
+    public static int minimumcoins(int[] coins, int amount) {
+        if (amount &lt; 0) throw new illegalargumentexception(&quot;negative amount&quot;);
+        int[] dp = new int[amount + 1];
+        arrays.fill(dp, amount + 1);
+        dp[0] = 0;
+        for (int value = 1; value &lt;= amount; value++)
+            for (int coin : coins) {
+                if (coin &lt;= 0) throw new illegalargumentexception(&quot;coins must be positive&quot;);
+                if (coin &lt;= value) dp[value] = math.min(dp[value], dp[value - coin] + 1);
+            }
+        return dp[amount] &gt; amount ? -1 : dp[amount];
+    }
+
+    /** number of paths in a grid, moving right or down around blocked cells. o(rows*columns). */
+    public static long gridpaths(boolean[][] blocked) {
+        int rows = blocked.length;
+        if (rows == 0) return 0;
+        int columns = blocked[0].length;
+        for (boolean[] row : blocked) if (row.length != columns) throw new illegalargumentexception(&quot;ragged grid&quot;);
+        if (columns == 0) return 0;
+        long[] dp = new long[columns];
+        dp[0] = blocked[0][0] ? 0 : 1;
+        for (int row = 0; row &lt; rows; row++)
+            for (int column = 0; column &lt; columns; column++) {
+                if (blocked[row][column]) dp[column] = 0;
+                else if (column &gt; 0) dp[column] = math.addexact(dp[column], dp[column - 1]);
+            }
+        return dp[columns - 1];
+    }
+}
+"><h3>First dynamic programs <span class="badge">Beginner</span></h3><p>Reuse answers to smaller states for sequences, coin change, or grids.</p>
+<div class="metadata"><strong>Complexity</strong><span>O(n), O(amount * coin types), or O(rows * columns).</span><strong>Caution</strong><span>Path counts can overflow long; coin denominations must be positive.</span>
+</div>
+<div class="study"><p><strong>Core idea:</strong> Define the state, base case, transition, and answer before writing loops. An iterative table avoids repeated recursion.</p><p><strong>Worked example:</strong> For coins 1, 3, 4, amount 6 needs two coins: 3 + 3.</p><p><strong>Practice:</strong> Write a table by hand for a small input and compare it with the program.</p></div>
+<details><summary>Show Java source</summary><pre><code><span class="keyword">package</span> notebook;
+
+<span class="keyword">import</span> java.util.Arrays;
+
+<span class="comment">/** First DP examples: identify a state, base case, transition, and answer. */</span>
+<span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> BeginnerDynamicProgramming {
+    <span class="keyword">private</span> BeginnerDynamicProgramming() {}
+
+    <span class="comment">/** Fibonacci F(n), with F(0)=0 and F(1)=1. O(n) time; n must be at most 92. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> fibonacci(<span class="keyword">int</span> n) {
+        <span class="keyword">if</span> (n &lt; <span class="number">0</span> || n &gt; <span class="number">92</span>) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;n must be in [0,92]&quot;</span>);
+        <span class="keyword">long</span> previous = <span class="number">0</span>, current = <span class="number">1</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) { <span class="keyword">long</span> next = previous + current; previous = current; current = next; }
+        <span class="keyword">return</span> previous;
+    }
+
+    <span class="comment">/** Minimum coins for an amount, or -1 if impossible. O(amount * coins.length) time. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> minimumCoins(<span class="keyword">int</span>[] coins, <span class="keyword">int</span> amount) {
+        <span class="keyword">if</span> (amount &lt; <span class="number">0</span>) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;negative amount&quot;</span>);
+        <span class="keyword">int</span>[] dp = <span class="keyword">new</span> <span class="keyword">int</span>[amount + <span class="number">1</span>];
+        Arrays.fill(dp, amount + <span class="number">1</span>);
+        dp[<span class="number">0</span>] = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> value = <span class="number">1</span>; value &lt;= amount; value++)
+            <span class="keyword">for</span> (<span class="keyword">int</span> coin : coins) {
+                <span class="keyword">if</span> (coin &lt;= <span class="number">0</span>) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;coins must be positive&quot;</span>);
+                <span class="keyword">if</span> (coin &lt;= value) dp[value] = Math.min(dp[value], dp[value - coin] + <span class="number">1</span>);
+            }
+        <span class="keyword">return</span> dp[amount] &gt; amount ? -<span class="number">1</span> : dp[amount];
+    }
+
+    <span class="comment">/** Number of paths in a grid, moving right or down around blocked cells. O(rows*columns). */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> gridPaths(<span class="keyword">boolean</span>[][] blocked) {
+        <span class="keyword">int</span> rows = blocked.length;
+        <span class="keyword">if</span> (rows == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;
+        <span class="keyword">int</span> columns = blocked[<span class="number">0</span>].length;
+        <span class="keyword">for</span> (<span class="keyword">boolean</span>[] row : blocked) <span class="keyword">if</span> (row.length != columns) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;ragged grid&quot;</span>);
+        <span class="keyword">if</span> (columns == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;
+        <span class="keyword">long</span>[] dp = <span class="keyword">new</span> <span class="keyword">long</span>[columns];
+        dp[<span class="number">0</span>] = blocked[<span class="number">0</span>][<span class="number">0</span>] ? <span class="number">0</span> : <span class="number">1</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> row = <span class="number">0</span>; row &lt; rows; row++)
+            <span class="keyword">for</span> (<span class="keyword">int</span> column = <span class="number">0</span>; column &lt; columns; column++) {
+                <span class="keyword">if</span> (blocked[row][column]) dp[column] = <span class="number">0</span>;
+                <span class="keyword">else</span> <span class="keyword">if</span> (column &gt; <span class="number">0</span>) dp[column] = Math.addExact(dp[column], dp[column - <span class="number">1</span>]);
+            }
+        <span class="keyword">return</span> dp[columns - <span class="number">1</span>];
+    }
+}
+</code></pre></details></article>
+</section>
+<section id="graphs"><h2>Graphs</h2><p class="muted">Distinguish directed and undirected edges before choosing an algorithm.</p>
+<article class="entry searchable" id="entry-graphs-intro" data-search="adjacency lists, bfs, and grid flood fill explore an unweighted graph or count regions in a grid. o(v+e) for graphs; o(rows * columns) for grids. for undirected graphs, insert both directions; bfs distance counts edges. {&quot;idea&quot;: &quot;an adjacency list stores each vertex&#x27;s neighbors. bfs visits vertices in layers, so its first visit gives the shortest unweighted distance.&quot;, &quot;example&quot;: &quot;for edges 0-1 and 1-2, bfs from 0 returns distances 0, 1, 2.&quot;, &quot;practice&quot;: &quot;draw a graph with an unreachable vertex and check the returned -1 distance.&quot;} package notebook;
+
+import java.util.arraydeque;
+import java.util.arraylist;
+import java.util.arrays;
+import java.util.list;
+
+/** first graph routines using adjacency lists and an explicit queue. */
+public final class beginnergraphs {
+    private beginnergraphs() {}
+
+    /** build an undirected adjacency list from zero-indexed edges. o(v+e) time and space. */
+    public static list&lt;list&lt;integer&gt;&gt; undirectedgraph(int vertices, int[][] edges) {
+        if (vertices &lt; 0) throw new illegalargumentexception(&quot;negative vertex count&quot;);
+        list&lt;list&lt;integer&gt;&gt; graph = new arraylist&lt;&gt;();
+        for (int i = 0; i &lt; vertices; i++) graph.add(new arraylist&lt;&gt;());
+        for (int[] edge : edges) {
+            if (edge.length != 2) throw new illegalargumentexception(&quot;edge must contain two vertices&quot;);
+            graph.get(edge[0]).add(edge[1]);
+            graph.get(edge[1]).add(edge[0]);
+        }
+        return graph;
+    }
+
+    /** bfs distances from source; -1 means unreachable. o(v+e) time. */
+    public static int[] distances(list&lt;list&lt;integer&gt;&gt; graph, int source) {
+        int[] distance = new int[graph.size()];
+        arrays.fill(distance, -1);
+        arraydeque&lt;integer&gt; queue = new arraydeque&lt;&gt;();
+        distance[source] = 0;
+        queue.add(source);
+        while (!queue.isempty()) {
+            int vertex = queue.remove();
+            for (int next : graph.get(vertex)) if (distance[next] == -1) {
+                distance[next] = distance[vertex] + 1;
+                queue.add(next);
+            }
+        }
+        return distance;
+    }
+
+    /** count four-neighbor components of true cells. o(rows*columns) time and space. */
+    public static int gridcomponents(boolean[][] open) {
+        int rows = open.length;
+        if (rows == 0) return 0;
+        int columns = open[0].length;
+        for (boolean[] row : open) if (row.length != columns) throw new illegalargumentexception(&quot;ragged grid&quot;);
+        boolean[][] seen = new boolean[rows][columns];
+        int[] dr = {-1, 1, 0, 0}, dc = {0, 0, -1, 1};
+        arraydeque&lt;int[]&gt; queue = new arraydeque&lt;&gt;();
+        int components = 0;
+        for (int row = 0; row &lt; rows; row++) for (int column = 0; column &lt; columns; column++) {
+            if (!open[row][column] || seen[row][column]) continue;
+            components++;
+            seen[row][column] = true;
+            queue.add(new int[] {row, column});
+            while (!queue.isempty()) {
+                int[] cell = queue.remove();
+                for (int direction = 0; direction &lt; 4; direction++) {
+                    int nextrow = cell[0] + dr[direction], nextcolumn = cell[1] + dc[direction];
+                    if (nextrow &lt; 0 || nextrow &gt;= rows || nextcolumn &lt; 0 || nextcolumn &gt;= columns
+                            || !open[nextrow][nextcolumn] || seen[nextrow][nextcolumn]) continue;
+                    seen[nextrow][nextcolumn] = true;
+                    queue.add(new int[] {nextrow, nextcolumn});
+                }
+            }
+        }
+        return components;
+    }
+}
+"><h3>Adjacency lists, BFS, and grid flood fill <span class="badge">Beginner</span></h3><p>Explore an unweighted graph or count regions in a grid.</p>
+<div class="metadata"><strong>Complexity</strong><span>O(V+E) for graphs; O(rows * columns) for grids.</span><strong>Caution</strong><span>For undirected graphs, insert both directions; BFS distance counts edges.</span>
+</div>
+<div class="study"><p><strong>Core idea:</strong> An adjacency list stores each vertex&#x27;s neighbors. BFS visits vertices in layers, so its first visit gives the shortest unweighted distance.</p><p><strong>Worked example:</strong> For edges 0-1 and 1-2, BFS from 0 returns distances 0, 1, 2.</p><p><strong>Practice:</strong> Draw a graph with an unreachable vertex and check the returned -1 distance.</p></div>
+<details><summary>Show Java source</summary><pre><code><span class="keyword">package</span> notebook;
+
+<span class="keyword">import</span> java.util.ArrayDeque;
+<span class="keyword">import</span> java.util.ArrayList;
+<span class="keyword">import</span> java.util.Arrays;
+<span class="keyword">import</span> java.util.List;
+
+<span class="comment">/** First graph routines using adjacency lists and an explicit queue. */</span>
+<span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> BeginnerGraphs {
+    <span class="keyword">private</span> BeginnerGraphs() {}
+
+    <span class="comment">/** Build an undirected adjacency list from zero-indexed edges. O(V+E) time and space. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> List&lt;List&lt;Integer&gt;&gt; undirectedGraph(<span class="keyword">int</span> vertices, <span class="keyword">int</span>[][] edges) {
+        <span class="keyword">if</span> (vertices &lt; <span class="number">0</span>) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;negative vertex count&quot;</span>);
+        List&lt;List&lt;Integer&gt;&gt; graph = <span class="keyword">new</span> ArrayList&lt;&gt;();
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; vertices; i++) graph.add(<span class="keyword">new</span> ArrayList&lt;&gt;());
+        <span class="keyword">for</span> (<span class="keyword">int</span>[] edge : edges) {
+            <span class="keyword">if</span> (edge.length != <span class="number">2</span>) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;edge must contain two vertices&quot;</span>);
+            graph.get(edge[<span class="number">0</span>]).add(edge[<span class="number">1</span>]);
+            graph.get(edge[<span class="number">1</span>]).add(edge[<span class="number">0</span>]);
+        }
+        <span class="keyword">return</span> graph;
+    }
+
+    <span class="comment">/** BFS distances from source; -1 means unreachable. O(V+E) time. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] distances(List&lt;List&lt;Integer&gt;&gt; graph, <span class="keyword">int</span> source) {
+        <span class="keyword">int</span>[] distance = <span class="keyword">new</span> <span class="keyword">int</span>[graph.size()];
+        Arrays.fill(distance, -<span class="number">1</span>);
+        ArrayDeque&lt;Integer&gt; queue = <span class="keyword">new</span> ArrayDeque&lt;&gt;();
+        distance[source] = <span class="number">0</span>;
+        queue.add(source);
+        <span class="keyword">while</span> (!queue.isEmpty()) {
+            <span class="keyword">int</span> vertex = queue.remove();
+            <span class="keyword">for</span> (<span class="keyword">int</span> next : graph.get(vertex)) <span class="keyword">if</span> (distance[next] == -<span class="number">1</span>) {
+                distance[next] = distance[vertex] + <span class="number">1</span>;
+                queue.add(next);
+            }
+        }
+        <span class="keyword">return</span> distance;
+    }
+
+    <span class="comment">/** Count four-neighbor components of true cells. O(rows*columns) time and space. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> gridComponents(<span class="keyword">boolean</span>[][] open) {
+        <span class="keyword">int</span> rows = open.length;
+        <span class="keyword">if</span> (rows == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;
+        <span class="keyword">int</span> columns = open[<span class="number">0</span>].length;
+        <span class="keyword">for</span> (<span class="keyword">boolean</span>[] row : open) <span class="keyword">if</span> (row.length != columns) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;ragged grid&quot;</span>);
+        <span class="keyword">boolean</span>[][] seen = <span class="keyword">new</span> <span class="keyword">boolean</span>[rows][columns];
+        <span class="keyword">int</span>[] dr = {-<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>}, dc = {<span class="number">0</span>, <span class="number">0</span>, -<span class="number">1</span>, <span class="number">1</span>};
+        ArrayDeque&lt;<span class="keyword">int</span>[]&gt; queue = <span class="keyword">new</span> ArrayDeque&lt;&gt;();
+        <span class="keyword">int</span> components = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> row = <span class="number">0</span>; row &lt; rows; row++) <span class="keyword">for</span> (<span class="keyword">int</span> column = <span class="number">0</span>; column &lt; columns; column++) {
+            <span class="keyword">if</span> (!open[row][column] || seen[row][column]) <span class="keyword">continue</span>;
+            components++;
+            seen[row][column] = true;
+            queue.add(<span class="keyword">new</span> <span class="keyword">int</span>[] {row, column});
+            <span class="keyword">while</span> (!queue.isEmpty()) {
+                <span class="keyword">int</span>[] cell = queue.remove();
+                <span class="keyword">for</span> (<span class="keyword">int</span> direction = <span class="number">0</span>; direction &lt; <span class="number">4</span>; direction++) {
+                    <span class="keyword">int</span> nextRow = cell[<span class="number">0</span>] + dr[direction], nextColumn = cell[<span class="number">1</span>] + dc[direction];
+                    <span class="keyword">if</span> (nextRow &lt; <span class="number">0</span> || nextRow &gt;= rows || nextColumn &lt; <span class="number">0</span> || nextColumn &gt;= columns
+                            || !open[nextRow][nextColumn] || seen[nextRow][nextColumn]) <span class="keyword">continue</span>;
+                    seen[nextRow][nextColumn] = true;
+                    queue.add(<span class="keyword">new</span> <span class="keyword">int</span>[] {nextRow, nextColumn});
+                }
+            }
+        }
+        <span class="keyword">return</span> components;
+    }
+}
+</code></pre></details></article>
+</section>
+<section id="strings"><h2>Strings</h2><p class="muted">Choose a one-pattern, many-pattern, palindrome, or suffix method.</p>
+<article class="entry searchable" id="entry-strings-intro" data-search="characters, frequencies, and direct matching count letters, test palindromes, or match a short pattern. o(n) scans; o(nm) direct matching. java char values are utf-16 code units; the frequency helper accepts a-z only. {&quot;idea&quot;: &quot;a string is an indexed sequence. start with direct comparisons before choosing a faster string algorithm.&quot;, &quot;example&quot;: &quot;the pattern aa occurs three times in aaaa because matches can overlap.&quot;, &quot;practice&quot;: &quot;test an empty text, one character, and overlapping matches.&quot;} package notebook;
+
+/** character and substring patterns for introductory contest problems. */
+public final class beginnerstrings {
+    private beginnerstrings() {}
+
+    /** compare characters from both ends. o(n) time, o(1) extra space. */
+    public static boolean ispalindrome(string text) {
+        for (int left = 0, right = text.length() - 1; left &lt; right; left++, right--)
+            if (text.charat(left) != text.charat(right)) return false;
+        return true;
+    }
+
+    /** count lowercase english letters. o(n) time, o(1) space; rejects other characters. */
+    public static int[] lowercasefrequencies(string text) {
+        int[] frequency = new int[26];
+        for (int i = 0; i &lt; text.length(); i++) {
+            char ch = text.charat(i);
+            if (ch &lt; &#x27;a&#x27; || ch &gt; &#x27;z&#x27;) throw new illegalargumentexception(&quot;expected a-z&quot;);
+            frequency[ch - &#x27;a&#x27;]++;
+        }
+        return frequency;
+    }
+
+    /** count exact occurrences, including overlaps. o(n*m) time. */
+    public static int countoccurrences(string text, string pattern) {
+        if (pattern.isempty()) throw new illegalargumentexception(&quot;pattern must not be empty&quot;);
+        int count = 0;
+        for (int start = 0; start + pattern.length() &lt;= text.length(); start++) {
+            int matched = 0;
+            while (matched &lt; pattern.length() &amp;&amp; text.charat(start + matched) == pattern.charat(matched))
+                matched++;
+            if (matched == pattern.length()) count++;
+        }
+        return count;
+    }
+
+    /** longest shared prefix of two strings. o(min(n,m)) time. */
+    public static string commonprefix(string first, string second) {
+        int length = 0;
+        while (length &lt; first.length() &amp;&amp; length &lt; second.length()
+                &amp;&amp; first.charat(length) == second.charat(length)) length++;
+        return first.substring(0, length);
+    }
+}
+"><h3>Characters, frequencies, and direct matching <span class="badge">Beginner</span></h3><p>Count letters, test palindromes, or match a short pattern.</p>
+<div class="metadata"><strong>Complexity</strong><span>O(n) scans; O(nm) direct matching.</span><strong>Caution</strong><span>Java char values are UTF-16 code units; the frequency helper accepts a-z only.</span>
+</div>
+<div class="study"><p><strong>Core idea:</strong> A string is an indexed sequence. Start with direct comparisons before choosing a faster string algorithm.</p><p><strong>Worked example:</strong> The pattern aa occurs three times in aaaa because matches can overlap.</p><p><strong>Practice:</strong> Test an empty text, one character, and overlapping matches.</p></div>
+<details><summary>Show Java source</summary><pre><code><span class="keyword">package</span> notebook;
+
+<span class="comment">/** Character and substring patterns for introductory contest problems. */</span>
+<span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> BeginnerStrings {
+    <span class="keyword">private</span> BeginnerStrings() {}
+
+    <span class="comment">/** Compare characters from both ends. O(n) time, O(1) extra space. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> isPalindrome(String text) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> left = <span class="number">0</span>, right = text.length() - <span class="number">1</span>; left &lt; right; left++, right--)
+            <span class="keyword">if</span> (text.charAt(left) != text.charAt(right)) <span class="keyword">return</span> false;
+        <span class="keyword">return</span> true;
+    }
+
+    <span class="comment">/** Count lowercase English letters. O(n) time, O(1) space; rejects other characters. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] lowercaseFrequencies(String text) {
+        <span class="keyword">int</span>[] frequency = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">26</span>];
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; text.length(); i++) {
+            <span class="keyword">char</span> ch = text.charAt(i);
+            <span class="keyword">if</span> (ch &lt; <span class="string">&#x27;a&#x27;</span> || ch &gt; <span class="string">&#x27;z&#x27;</span>) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;expected a-z&quot;</span>);
+            frequency[ch - <span class="string">&#x27;a&#x27;</span>]++;
+        }
+        <span class="keyword">return</span> frequency;
+    }
+
+    <span class="comment">/** Count exact occurrences, including overlaps. O(n*m) time. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> countOccurrences(String text, String pattern) {
+        <span class="keyword">if</span> (pattern.isEmpty()) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;pattern must not be empty&quot;</span>);
+        <span class="keyword">int</span> count = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> start = <span class="number">0</span>; start + pattern.length() &lt;= text.length(); start++) {
+            <span class="keyword">int</span> matched = <span class="number">0</span>;
+            <span class="keyword">while</span> (matched &lt; pattern.length() &amp;&amp; text.charAt(start + matched) == pattern.charAt(matched))
+                matched++;
+            <span class="keyword">if</span> (matched == pattern.length()) count++;
+        }
+        <span class="keyword">return</span> count;
+    }
+
+    <span class="comment">/** Longest shared prefix of two strings. O(min(n,m)) time. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> String commonPrefix(String first, String second) {
+        <span class="keyword">int</span> length = <span class="number">0</span>;
+        <span class="keyword">while</span> (length &lt; first.length() &amp;&amp; length &lt; second.length()
+                &amp;&amp; first.charAt(length) == second.charAt(length)) length++;
+        <span class="keyword">return</span> first.substring(<span class="number">0</span>, length);
+    }
+}
+</code></pre></details></article>
+</section>
+<section id="number-theory-and-combinatorics"><h2>Number theory and combinatorics</h2><p class="muted">Use exact or modular arithmetic according to the requested result.</p>
+<article class="entry searchable" id="entry-math-intro" data-search="gcd, trial division, divisors, and powers solve small divisibility and integer arithmetic tasks. gcd o(log n); trial division o(sqrt n); power o(log exponent). exact power reports long overflow; inputs to gcd must be nonnegative. {&quot;idea&quot;: &quot;a divisor larger than the square root has a matching smaller divisor. euclid repeatedly replaces (a,b) by (b,a mod b).&quot;, &quot;example&quot;: &quot;the divisors of 36 come in pairs around 6, giving nine positive divisors.&quot;, &quot;practice&quot;: &quot;compare trial-division results with direct enumeration for small values.&quot;} package notebook;
+
+/** elementary integer math before modular arithmetic and number theory. */
+public final class beginnermath {
+    private beginnermath() {}
+
+    /** euclid&#x27;s algorithm for nonnegative inputs. o(log min(a,b)) time. */
+    public static long gcd(long a, long b) {
+        if (a &lt; 0 || b &lt; 0) throw new illegalargumentexception(&quot;expected nonnegative values&quot;);
+        while (b != 0) { long next = a % b; a = b; b = next; }
+        return a;
+    }
+
+    /** test primality by trial division. o(sqrt(n)) time, o(1) space. */
+    public static boolean isprime(long value) {
+        if (value &lt; 2) return false;
+        for (long divisor = 2; divisor &lt;= value / divisor; divisor++)
+            if (value % divisor == 0) return false;
+        return true;
+    }
+
+    /** count positive divisors of a positive integer. o(sqrt(n)) time. */
+    public static long divisorcount(long value) {
+        if (value &lt;= 0) throw new illegalargumentexception(&quot;expected a positive value&quot;);
+        long count = 0;
+        for (long divisor = 1; divisor &lt;= value / divisor; divisor++)
+            if (value % divisor == 0) count += divisor == value / divisor ? 1 : 2;
+        return count;
+    }
+
+    /** compute base^exponent for a nonnegative exponent. o(log exponent) time. */
+    public static long power(long base, long exponent) {
+        if (exponent &lt; 0) throw new illegalargumentexception(&quot;negative exponent&quot;);
+        long result = 1;
+        while (exponent != 0) {
+            if ((exponent &amp; 1) != 0) result = math.multiplyexact(result, base);
+            exponent &gt;&gt;= 1;
+            if (exponent != 0) base = math.multiplyexact(base, base);
+        }
+        return result;
+    }
+}
+"><h3>GCD, trial division, divisors, and powers <span class="badge">Beginner</span></h3><p>Solve small divisibility and integer arithmetic tasks.</p>
+<div class="metadata"><strong>Complexity</strong><span>GCD O(log n); trial division O(sqrt n); power O(log exponent).</span><strong>Caution</strong><span>Exact power reports long overflow; inputs to gcd must be nonnegative.</span>
+</div>
+<div class="study"><p><strong>Core idea:</strong> A divisor larger than the square root has a matching smaller divisor. Euclid repeatedly replaces (a,b) by (b,a mod b).</p><p><strong>Worked example:</strong> The divisors of 36 come in pairs around 6, giving nine positive divisors.</p><p><strong>Practice:</strong> Compare trial-division results with direct enumeration for small values.</p></div>
+<details><summary>Show Java source</summary><pre><code><span class="keyword">package</span> notebook;
+
+<span class="comment">/** Elementary integer math before modular arithmetic and number theory. */</span>
+<span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> BeginnerMath {
+    <span class="keyword">private</span> BeginnerMath() {}
+
+    <span class="comment">/** Euclid&#x27;s algorithm for nonnegative inputs. O(log min(a,b)) time. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> gcd(<span class="keyword">long</span> a, <span class="keyword">long</span> b) {
+        <span class="keyword">if</span> (a &lt; <span class="number">0</span> || b &lt; <span class="number">0</span>) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;expected nonnegative values&quot;</span>);
+        <span class="keyword">while</span> (b != <span class="number">0</span>) { <span class="keyword">long</span> next = a % b; a = b; b = next; }
+        <span class="keyword">return</span> a;
+    }
+
+    <span class="comment">/** Test primality by trial division. O(sqrt(n)) time, O(1) space. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> isPrime(<span class="keyword">long</span> value) {
+        <span class="keyword">if</span> (value &lt; <span class="number">2</span>) <span class="keyword">return</span> false;
+        <span class="keyword">for</span> (<span class="keyword">long</span> divisor = <span class="number">2</span>; divisor &lt;= value / divisor; divisor++)
+            <span class="keyword">if</span> (value % divisor == <span class="number">0</span>) <span class="keyword">return</span> false;
+        <span class="keyword">return</span> true;
+    }
+
+    <span class="comment">/** Count positive divisors of a positive integer. O(sqrt(n)) time. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> divisorCount(<span class="keyword">long</span> value) {
+        <span class="keyword">if</span> (value &lt;= <span class="number">0</span>) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;expected a positive value&quot;</span>);
+        <span class="keyword">long</span> count = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">long</span> divisor = <span class="number">1</span>; divisor &lt;= value / divisor; divisor++)
+            <span class="keyword">if</span> (value % divisor == <span class="number">0</span>) count += divisor == value / divisor ? <span class="number">1</span> : <span class="number">2</span>;
+        <span class="keyword">return</span> count;
+    }
+
+    <span class="comment">/** Compute base^exponent for a nonnegative exponent. O(log exponent) time. */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> power(<span class="keyword">long</span> base, <span class="keyword">long</span> exponent) {
+        <span class="keyword">if</span> (exponent &lt; <span class="number">0</span>) <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">&quot;negative exponent&quot;</span>);
+        <span class="keyword">long</span> result = <span class="number">1</span>;
+        <span class="keyword">while</span> (exponent != <span class="number">0</span>) {
+            <span class="keyword">if</span> ((exponent &amp; <span class="number">1</span>) != <span class="number">0</span>) result = Math.multiplyExact(result, base);
+            exponent &gt;&gt;= <span class="number">1</span>;
+            <span class="keyword">if</span> (exponent != <span class="number">0</span>) base = Math.multiplyExact(base, base);
+        }
+        <span class="keyword">return</span> result;
+    }
+}
+</code></pre></details></article>
+</section>
+<footer class="panel"><strong>Conventions:</strong> zero-based indices and half-open ranges unless documented otherwise. Source code is tested by the repository workflow.</footer>
+</main><script>
+const box=document.querySelector('#search');const cards=[...document.querySelectorAll('.searchable')];
+box.addEventListener('input',()=>{const q=box.value.trim().toLowerCase();for(const card of cards){const text=(card.dataset.search||card.textContent).toLowerCase();card.hidden=!text.includes(q)}});
+</script></body></html>

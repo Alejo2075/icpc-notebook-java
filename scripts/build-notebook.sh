@@ -2,9 +2,9 @@
 set -eu
 cd "$(dirname "$0")/.."
 
-PROFILE="${1:-full}"
-if [ "$PROFILE" != full ] && [ "$PROFILE" != contest ]; then
-    echo "Usage: scripts/build-notebook.sh [full|contest] [maximum-pages]" >&2
+PROFILE="${1:-beginner}"
+if [ "$PROFILE" != beginner ] && [ "$PROFILE" != intermediate ] && [ "$PROFILE" != advanced ]; then
+    echo "Usage: scripts/build-notebook.sh [beginner|intermediate|advanced] [maximum-pages]" >&2
     exit 2
 fi
 MAX_PAGES="${2:-0}"
@@ -35,4 +35,7 @@ if [ "$MAX_PAGES" -gt 0 ]; then
 fi
 mkdir -p output/pdf
 cp "build/$PROFILE/notebook.pdf" "output/pdf/icpc-notebook-java-$PROFILE.pdf"
-echo "Ready: build/$PROFILE/notebook.tex and output/pdf/icpc-notebook-java-$PROFILE.pdf"
+mkdir -p "output/latex/$PROFILE"
+cp "build/$PROFILE/notebook.tex" "output/latex/$PROFILE/notebook.tex"
+cp "build/$PROFILE/logo.png" "output/latex/$PROFILE/logo.png"
+echo "Ready: output/latex/$PROFILE/notebook.tex and output/pdf/icpc-notebook-java-$PROFILE.pdf"

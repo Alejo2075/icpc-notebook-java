@@ -1,5 +1,7 @@
 package notebook;
 
+import java.util.function.LongPredicate;
+
 /** Search and sorting routines. Input to searches must be sorted ascending. */
 public final class SearchingSorting {
     private SearchingSorting() {}
@@ -50,5 +52,27 @@ public final class SearchingSorting {
             else hi = mid;
         }
         return lo;
+    }
+
+    /** First index with a[i] > key in a sorted array. O(log n). */
+    public static int upperBound(int[] a, int key) {
+        int lo = 0, hi = a.length;
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (a[mid] <= key) lo = mid + 1;
+            else hi = mid;
+        }
+        return lo;
+    }
+
+    /** First x in nonnegative [low,high] satisfying a monotone false-then-true predicate. */
+    public static long firstTrue(long low, long high, LongPredicate predicate) {
+        if (low < 0 || low > high || !predicate.test(high)) throw new IllegalArgumentException("no true value in range");
+        while (low < high) {
+            long mid = low + ((high - low) >>> 1);
+            if (predicate.test(mid)) high = mid;
+            else low = mid + 1;
+        }
+        return low;
     }
 }

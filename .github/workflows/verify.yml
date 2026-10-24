@@ -3,7 +3,7 @@ on:
   push:
   pull_request:
 jobs:
-  java-and-pdf:
+  java-and-notebooks:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
@@ -12,16 +12,36 @@ jobs:
           distribution: temurin
           java-version: '17'
       - name: Install LaTeX and Poppler
-        run: sudo apt-get update && sudo apt-get install -y texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-lang-spanish latexmk poppler-utils
-      - name: Verify Java and build full notebook
-        run: scripts/build-notebook.sh full 25
-      - name: Build compact selection
-        run: scripts/build-notebook.sh contest 25
-      - name: Upload PDFs
+        run: sudo apt-get update && sudo apt-get install -y texlive-latex-base texlive-latex-recommended texlive-latex-extra latexmk poppler-utils
+      - name: Verify Java and build beginner reference
+        run: scripts/build-notebook.sh beginner 40
+      - name: Build intermediate reference
+        run: scripts/build-notebook.sh intermediate 70
+      - name: Build advanced reference
+        run: scripts/build-notebook.sh advanced 120
+      - name: Generate searchable HTML references
+        run: |
+          python3 scripts/generate_html.py --profile beginner
+          python3 scripts/generate_html.py --profile intermediate
+          python3 scripts/generate_html.py --profile advanced
+      - name: Upload LaTeX, HTML, and PDFs
         uses: actions/upload-artifact@v7
         with:
           name: icpc-notebook-java
           if-no-files-found: error
           path: |
-            output/pdf/icpc-notebook-java-full.pdf
-            output/pdf/icpc-notebook-java-contest.pdf
+            output/pdf/icpc-notebook-java-beginner.pdf
+            output/pdf/icpc-notebook-java-intermediate.pdf
+            output/pdf/icpc-notebook-java-advanced.pdf
+            output/latex/beginner/notebook.tex
+            output/latex/beginner/logo.png
+            output/latex/intermediate/notebook.tex
+            output/latex/intermediate/logo.png
+            output/latex/advanced/notebook.tex
+            output/latex/advanced/logo.png
+            output/html/beginner/notebook.html
+            output/html/beginner/logo.png
+            output/html/intermediate/notebook.html
+            output/html/intermediate/logo.png
+            output/html/advanced/notebook.html
+            output/html/advanced/logo.png
